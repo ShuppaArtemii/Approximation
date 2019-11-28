@@ -1,4 +1,3 @@
-import math;
 
 class Approximation:
 	def __init__(self):
@@ -25,13 +24,13 @@ class Approximation:
 		return koefficients;
 
 	def CalcDiscripancy(self, koefficients, functions, conformity):
-		height_ = len(parameters);
-		width_ = len(parameters[0]);
+		height_ = len(self.parameters);
+		width_ = len(self.parameters[0]);
 		squareDiscripancySum = 0;
 
 		for rowIdx in range(0, height_):
 			sum = 0;
-			for colIdx in range(0, width_ - 1):
+			for colIdx in range(width_, 0, - 1):
 				for funcIdx in range(len(functions)):
 					sum += koefficients[funcIdx] * functions[funcIdx](self.GetFunctionParameters_(funcIdx, rowIdx, conformity));
 					#value = koefficients[colIdx] * functions[colIdx](self.GetFunctionParameters_(colIdx, rowIdx, conformity));
@@ -43,7 +42,7 @@ class Approximation:
 	def GetFunctionParameters_(self, funcIdx, rowIdx, conformity):
 		row = [];
 		for i in range(0, len(conformity[funcIdx])):
-			row.append(parameters[rowIdx][i]);
+			row.append(self.parameters[rowIdx][i]);
 
 		return row;
 
