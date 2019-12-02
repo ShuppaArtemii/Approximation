@@ -1,6 +1,6 @@
 import unittest
-import math
 import PythonApproximation;
+import math
 
 def Return1(list):
 	return 1;
