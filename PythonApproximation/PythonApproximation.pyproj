@@ -22,6 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Approximation.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Chart3D.py">
       <SubType>Code</SubType>
     </Compile>

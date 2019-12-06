@@ -1,6 +1,7 @@
 import unittest
 import PythonApproximation;
 import math
+import requests
 
 def Return1(list):
 	return 1;
@@ -67,5 +68,38 @@ class Test_ExplicitTypeRegression(unittest.TestCase):
         discripancy = approximation.CalcDiscripancy(koefficients, functions, conformity);
         self.assertEqual(discripancy, 0);
 
+
+
+#class Test_QSystemAlgorithms(unittest.TestCase):
+#    def test_AllAlgorithms(self):
+        
+#        algorithmCount = len(requests.get('https://qserverr.herokuapp.com/api/v2/algorithms').json()['data']);
+#        for algId in range(1, algorithmCount + 1):
+#            jsonRequest = requests.get('https://qserverr.herokuapp.com/api/v2/algorithms/' + str(algId) + '/determinants/matrix').json();
+#            parameters = jsonRequest['data']['X'];
+#            processors = jsonRequest['data']['y']['processors'];
+#            ticks = jsonRequest['data']['y']['ticks'];
+#            if(parameters == []):
+#                continue;
+
+#            approximation = PythonApproximation.Approximation(parameters, ticks);
+#            funcPowerPolynomial = [];
+#            confPowerPolynomial = [];
+
+#            #constant
+#            funcPowerPolynomial.append(Return1);
+#            confPowerPolynomial.append([]);
+
+#            #X defintion
+#            primitiveBaseFunctions = [];
+#            for i in range(len(parameters[0])):
+#                PythonApproximation.ReturnXFunctor()
+#            #X^1 + X^2 + ... + X^n
+#            functions_, conformity_ = PythonApproximation.MakeFunctionsSequence([ReturnX], [0], 1, 10);
+#            funcPowerPolynomial.extend(functions_);
+#            confPowerPolynomial.extend(conformity_);
+
+#            koefficients = approximation.CalcKoefficients(functions, conformity)
+#            approximation.CalcDiscripancy()
 if __name__ == '__main__':
     unittest.main()
