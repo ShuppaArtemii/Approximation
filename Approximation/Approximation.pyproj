@@ -1,0 +1,112 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>7868d338-db79-42bb-b608-0b6f983ea729</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>main.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>Approximation</Name>
+    <RootNamespace>Approximation</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Approximation\Approximation.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Functions.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Functors\AbstractModifiedFunctor_.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Functors\BaseFunctor.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Functors\CeilFunctor.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Functors\Tests\testBaseFunctor.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Functors\Tests\testPowerFunctor.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Functors\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Functors\PowerFunctor.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Regressions\PowerRegression.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Regressions\Tests\testPowerRegression.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Regressions\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Sequences\AbstractSequence_.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Sequences\PowerSequence.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Sequences\Tests\testPowerSequence.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Sequences\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Tests\testBaseFunctorApproximation.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="main.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Schedule\Schedule.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Schedule\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Approximation\" />
+    <Folder Include="Approximation\Instruments\" />
+    <Folder Include="Approximation\Instruments\Functors\" />
+    <Folder Include="Approximation\Instruments\Functors\Tests\" />
+    <Folder Include="Approximation\Instruments\Regressions\" />
+    <Folder Include="Approximation\Instruments\Regressions\Tests\" />
+    <Folder Include="Approximation\Instruments\Sequences\" />
+    <Folder Include="Approximation\Instruments\Sequences\Tests\" />
+    <Folder Include="Approximation\Tests\" />
+    <Folder Include="Schedule\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>

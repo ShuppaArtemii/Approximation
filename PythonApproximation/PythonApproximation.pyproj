@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>13a289cd-9865-4329-bd6d-e2085d70d3ec</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>PythonApproximation.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,16 +22,48 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Approximation.py">
+    <Compile Include="Approximation\Approximation.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Chart3D.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PythonApproximation.py" />
-    <Compile Include="test.py">
+    <Compile Include="FunctorsBuilder\Sequences\AbstractSequence_.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FunctorsBuilder\Sequences\PowerSequence.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FunctorsBuilder\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FunctorsBuilder\Functors\AbstractModifiedFunctors_.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FunctorsBuilder\Functors\BaseFunctors.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FunctorsBuilder\Functors\PowerFunctors.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="main.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PythonApproximation.py" />
+    <Compile Include="testFunctorsBuilder.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Approximation\" />
+    <Folder Include="Approximation\FunctorsBuilder\" />
+    <Folder Include="FunctorsBuilder\" />
+    <Folder Include="FunctorsBuilder\Functors\" />
+    <Folder Include="FunctorsBuilder\Regressions\" />
+    <Folder Include="FunctorsBuilder\Sequences\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

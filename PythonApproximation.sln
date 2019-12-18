@@ -5,14 +5,30 @@ VisualStudioVersion = 15.0.28307.902
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PythonApproximation", "PythonApproximation\PythonApproximation.pyproj", "{13A289CD-9865-4329-BD6D-E2085D70D3EC}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Approximation", "Approximation\Approximation.pyproj", "{7868D338-DB79-42BB-B608-0B6F983EA729}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{13A289CD-9865-4329-BD6D-E2085D70D3EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13A289CD-9865-4329-BD6D-E2085D70D3EC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{13A289CD-9865-4329-BD6D-E2085D70D3EC}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{13A289CD-9865-4329-BD6D-E2085D70D3EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13A289CD-9865-4329-BD6D-E2085D70D3EC}.Release|x64.ActiveCfg = Release|Any CPU
+		{13A289CD-9865-4329-BD6D-E2085D70D3EC}.Release|x86.ActiveCfg = Release|Any CPU
+		{7868D338-DB79-42BB-B608-0B6F983EA729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7868D338-DB79-42BB-B608-0B6F983EA729}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7868D338-DB79-42BB-B608-0B6F983EA729}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7868D338-DB79-42BB-B608-0B6F983EA729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7868D338-DB79-42BB-B608-0B6F983EA729}.Release|x64.ActiveCfg = Release|Any CPU
+		{7868D338-DB79-42BB-B608-0B6F983EA729}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
