@@ -9,7 +9,7 @@ class Test_testPowerRegression(unittest.TestCase):
     def test_GetPowerRegressionReturn1(self):
        baseFunctors = BaseFunctor.BaseFunctor(Return1, [], "");
        power = 10;
-       regression = PowerRegression.PowerRegression.GetRegression(baseFunctors, power);
+       regression = PowerRegression.PowerRegression.GetRegression([baseFunctors], power);
        
        self.assertEqual(power + 1, len(regression));
 
@@ -24,7 +24,7 @@ class Test_testPowerRegression(unittest.TestCase):
     def test_GetPowerRegressionReturnX(self):
        baseFunctors = BaseFunctor.BaseFunctor(ReturnX, [0], "x");
        power = 10;
-       regression = PowerRegression.PowerRegression.GetRegression(baseFunctors, power);
+       regression = PowerRegression.PowerRegression.GetRegression([baseFunctors], power);
        
        self.assertEqual(power + 1, len(regression));
 

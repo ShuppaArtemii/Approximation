@@ -1,8 +1,9 @@
 import pylab
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import pyplot 
 import numpy
 import array
-
+from Approximation import FunctorListMethods
 class Schedule:
     #возвращает данные для графика
     def MakeGridData_(koefficients, functions, start, stop, step):
@@ -12,13 +13,10 @@ class Schedule:
       
         matrix = [];
 
-        for i in xgrid[0]:
+        for i in x:
             row = [];
-            for j in xgrid[0]:
-                sum = 0;
-                for funcIdx in range(0, len(functions)):
-                    sum += koefficients[funcIdx] * functions[funcIdx]([i, j]);
-                row.append(sum);
+            for j in y:
+                row.append(FunctorListMethods.CalculateDependence(koefficients, functions, [i, j]));
             matrix.append(row);
         zgrid = numpy.array(matrix);
         return xgrid, ygrid, zgrid;
@@ -28,9 +26,31 @@ class Schedule:
         if(step == None):
             step = (stop - start) / 100;
         
-        x, y, z = Schedule.MakeGridData_(koefficients, functions, start, stop, step);
-        fig = pylab.figure();
-        axes = Axes3D(fig);
-        axes.plot_surface(x, y, z);
+        uniqueConformities = [];
+        for i in range(len(functions)):
+            for j in range(len(functions[i].conformity_)):
+                value = functions[i].conformity_[j];
+                if(not value in uniqueConformities):
+                    uniqueConformities.append(value);
+        
+        if(len(uniqueConformities) < 2):
+            y = [];
+            
+            for i in range(start, stop, round(step)):
+                sum = 0;
+                for j in range(len(functions)):
+                    sum += koefficients[j] * functions[j]([i]);
+                y.append(sum);
+            
+            fig, ax = pyplot.subplots();
+            ax.plot(y);
+
+        elif(len(uniqueConformities) == 2):
+            x, y, z = Schedule.MakeGridData_(koefficients, functions, start, stop, step);
+            fig = pylab.figure();
+            axes = Axes3D(fig);
+            axes.plot_surface(x, y, z);
+        else:
+            raise ValueError('Invalid parameters');
         pylab.show();
     

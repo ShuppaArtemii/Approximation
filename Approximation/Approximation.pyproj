@@ -24,6 +24,12 @@
     <Compile Include="Approximation\Approximation.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Approximation\FunctorListMethods.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\GuessApproximation.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Approximation\Instruments\Functions.py">
       <SubType>Code</SubType>
     </Compile>
@@ -34,12 +40,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\Functors\CeilFunctor.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Approximation\Instruments\Functors\Tests\testBaseFunctor.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Approximation\Instruments\Functors\Tests\testPowerFunctor.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\Functors\__init__.py">
@@ -72,7 +72,10 @@
     <Compile Include="Approximation\Instruments\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Approximation\Tests\testBaseFunctorApproximation.py">
+    <Compile Include="Approximation\Tests\testApproximation.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Tests\testGuessApproximation.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\__init__.py">
@@ -84,6 +87,9 @@
     <Compile Include="Schedule\Schedule.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Schedule\visualTestSchedule.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Schedule\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -92,7 +98,6 @@
     <Folder Include="Approximation\" />
     <Folder Include="Approximation\Instruments\" />
     <Folder Include="Approximation\Instruments\Functors\" />
-    <Folder Include="Approximation\Instruments\Functors\Tests\" />
     <Folder Include="Approximation\Instruments\Regressions\" />
     <Folder Include="Approximation\Instruments\Regressions\Tests\" />
     <Folder Include="Approximation\Instruments\Sequences\" />

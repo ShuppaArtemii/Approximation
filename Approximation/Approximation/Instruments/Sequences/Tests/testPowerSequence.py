@@ -9,7 +9,7 @@ class Test_testPowerSequence(unittest.TestCase):
         baseFunctor = BaseFunctor.BaseFunctor(ReturnX, [0], "x0");
        
         start = 0; stop = 5;
-        sequence = PowerSequence.PowerSequence.GetSequence(baseFunctor, start, stop);
+        sequence = PowerSequence.PowerSequence.GetSequence([baseFunctor], start, stop);
         self.assertEqual(stop, len(sequence));
 
         powerFunctor = PowerFunctor.PowerFunctor(baseFunctor);

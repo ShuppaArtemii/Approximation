@@ -2,9 +2,9 @@ from Approximation.Instruments.Functors import AbstractModifiedFunctor_
 import math
 
 class PowerFunctor(AbstractModifiedFunctor_.AbstractModifiedFunctor_):
-    def __init(self, baseFunctor, power = 1):
+    def __init__(self, baseFunctor, power = 1):
         super().__init__(baseFunctor);
-        self.power_ = power;
+        self.SetPower(power);
 
     def SetPower(self, power):
         self.power_ = power;
@@ -16,7 +16,12 @@ class PowerFunctor(AbstractModifiedFunctor_.AbstractModifiedFunctor_):
         return super().__call__(list);
     
     def ToString(self):
-        return self.strFunction_ + "^" + str(self.power_);
+        string = "";
+        if (self.power_ != 0):
+            string = self.strFunction_;
+            if(self.power_ != 1):
+                string += "^" + str(self.power_);
+        return string;
 
     def __eq__(self, other):
         return super().__eq__(other) and self.power_ == other.power_;
