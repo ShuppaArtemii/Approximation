@@ -11,9 +11,9 @@ def drange(x, y, jump):
     x += decimal.Decimal(jump)
     
 class Graph:
-    def __init__(self, graphPlot,  koefficients, functions, minX, maxX, minY, maxY, title = ''):
+    def __init__(self, graphPlot,  koefficients, functions, parameters, results, minX, maxX, minY, maxY, title = ''):
         self.graphPlot = graphPlot;
-        self.SetParameters(koefficients, functions, minX, maxX, minY, maxY);
+        self.SetParameters(koefficients, functions, parameters, results, minX, maxX, minY, maxY);
         self.title = title;
         self.Update()
 
@@ -38,7 +38,9 @@ class Graph:
         self.minY = minY;
         self.maxY = maxY;
 
-    def SetParameters(self, koefficients, functions, minX, maxX, minY, maxY):
+    def SetParameters(self, koefficients, functions, parameters, results, minX, maxX, minY, maxY):
+        self.parameters = parameters;
+        self.results = results;
         self.SetKoefficientsAndFunctions(koefficients, functions);
         self.SetRange(minX, maxX, minY, maxY);
 
@@ -61,10 +63,28 @@ class Graph:
         if(self.dimentions == 0 or self.dimentions == 1):
             x, y = self.Get2D_Data();
             self.graphPlot.plot(x, y);
+            xPoints = [];
+            for i in range(len(self.parameters)):
+                xPoints.append(self.parameters[i][0]);
+            yPoints = [];
+            for i in range(len(self.results)):
+                yPoints.append(self.results[i]);
+            plt.scatter(xPoints, yPoints, c='r');
+
         elif(self.dimentions == 2):
             x, y, z = self.Get3D_Data();
             self.graphPlot.plot_surface(x, y, z);
-            
+
+            #xPoints = [];
+            #for i in range(len(self.parameters)):
+            #    xPoints.append(self.parameters[i][0]);
+            #yPoints = [];
+            #for i in range(len(self.parameters)):
+            #    yPoints.append(self.parameters[i][1]);
+            #zPoints = [];
+            #for i in range(len(self.results)):
+            #    zPoints.append(self.results[i]);
+            #plt.scatter(xPoints, yPoints, zPoints, c='r');
             
         self.graphPlot.grid(True);
         plt.title(self.title)
@@ -100,7 +120,7 @@ class Graph:
         return xgrid, ygrid, zgrid;
 
 
-def Draw(koefficients, functions, xMin, xMax, yMin, yMax, title = ""):
+def Draw(koefficients, functions, parameters, results, xMin, xMax, yMin, yMax, title = ""):
     uniqueConformities = [];
     for i in range(len(functions)):
         for j in range(len(functions[i].conformity_)):
@@ -108,8 +128,6 @@ def Draw(koefficients, functions, xMin, xMax, yMin, yMax, title = ""):
             if(not value in uniqueConformities):
                 uniqueConformities.append(value);
     dimentions = len(uniqueConformities);
-
-    
 
     #min-max-X "area"
     minXBox = plt.axes([0.2, 0.05, 0.1, 0.05])
@@ -139,7 +157,7 @@ def Draw(koefficients, functions, xMin, xMax, yMin, yMax, title = ""):
         graphPlot = plt.axes([0.1, 0.2, 0.8, 0.7], projection='3d')
     else:
         raise ValueError('Display multiple dimensions does not realized yet');
-    g = Graph(graphPlot, koefficients, functions, minXTextBox.text, maxXTextBox.text, minYTextBox.text, maxYTextBox.text, title)
+    g = Graph(graphPlot, koefficients, functions, parameters, results, minXTextBox.text, maxXTextBox.text, minYTextBox.text, maxYTextBox.text, title)
    
     #set submit
     minXTextBox.on_submit(g.UpdateXMin)

@@ -27,12 +27,17 @@ if __name__ == '__main__':
         
         print("processors");
         koefficients, functorsList, discripancy = GuessApproximation.GuessApproximation.Analyse(parameters, processors, fullSearch=False);
+        
         info = FunctorListMethods.GetStringInfo(koefficients, functorsList, discripancy);
         print(info);
-        Schedule.Draw(koefficients, functorsList, 1, 10, 1, 10, info);
+        minPoint = min(parameters)[0]
+        maxPoint = max(parameters)[0]
+        Schedule.Draw(koefficients, functorsList, parameters, processors, minPoint, maxPoint, minPoint, maxPoint, info);
 
         print("ticks");
         koefficients, functorsList, discripancy = GuessApproximation.GuessApproximation.Analyse(parameters, ticks, fullSearch=False);
         info = FunctorListMethods.GetStringInfo(koefficients, functorsList, discripancy);
         print(info);
-        Schedule.Draw(koefficients, functorsList, 1, 10, 1, 10, info);
+        minPoint = min(parameters)[0]
+        maxPoint = max(parameters)[0]
+        Schedule.Draw(koefficients, functorsList, parameters, ticks, minPoint, maxPoint, minPoint, maxPoint, info);
