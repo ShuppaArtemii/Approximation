@@ -14,9 +14,12 @@ def GetStringDependence(koefficients, functorsList):
                 string += "*" + functorsList[i].ToString();
     return string;
 
+def GetStringDiscripancy(discripancy):
+    return "Discripancy: " + str(discripancy);
+
 def GetStringInfo(koefficients, functorsList, discripancy):
     string = GetStringDependence(koefficients, functorsList);
-    string += "\nDiscripancy: " + str(discripancy);
+    string += "\n" + GetStringDiscripancy(discripancy);
     return string;
 
 def CalculateDependence(koefficients, functorsList, params):

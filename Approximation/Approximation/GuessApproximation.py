@@ -17,6 +17,7 @@ class GuessApproximation:
         bestDiscripancy = sys.float_info.max;
         bestRegression = [];
         bestKoefficients = [];
+        parameters = GuessApproximation.UpdateParameters_(parameters);
 
         approximation = Approximation.Approximation(parameters, results);
         
@@ -65,3 +66,16 @@ class GuessApproximation:
         baseFunctors.append(functorList);
         
         return baseFunctors;
+
+    def UpdateParameters_(parameters):
+        for i in range(len(parameters[0]) - 1, 0, -1):
+            bNotFullRepeat = False;
+            val = parameters[0][i];
+            for j in range(1, len(parameters)):
+                if(val != parameters[j][i]):
+                    bNotFullRepeat = True;
+                    break;
+            if(not bNotFullRepeat):
+                for j in range(0, len(parameters)):
+                    parameters[j].pop(i);
+        return parameters;
