@@ -4,6 +4,19 @@ from Approximation import FunctorListMethods
 
 import requests
 
+def Process(parameters, results):
+    koefficients, functorsList, discripancy = GuessApproximation.GuessApproximation.Analyse(parameters, results, fullSearch=False);
+        
+    minPoint = min(parameters)[0]
+    maxPoint = max(parameters)[0]
+    if(minPoint == 0 and maxPoint == 0):
+        minPoint = -1;
+        maxPoint = 1;
+
+    info = FunctorListMethods.GetStringInfo(koefficients, functorsList, discripancy);
+    print(info);
+    Schedule.Draw(koefficients, functorsList, parameters, results, minPoint, maxPoint, minPoint, maxPoint, info);
+
 if __name__ == '__main__':
     response = requests.get('https://qserverr.herokuapp.com/api/v2/algorithms');
     algorithms = response.json()['data'];
@@ -26,18 +39,7 @@ if __name__ == '__main__':
         print(ticks);
         
         print("processors");
-        koefficients, functorsList, discripancy = GuessApproximation.GuessApproximation.Analyse(parameters, processors, fullSearch=False);
+        Process(parameters, processors);
         
-        info = FunctorListMethods.GetStringInfo(koefficients, functorsList, discripancy);
-        print(info);
-        minPoint = min(parameters)[0]
-        maxPoint = max(parameters)[0]
-        Schedule.Draw(koefficients, functorsList, parameters, processors, minPoint, maxPoint, minPoint, maxPoint, info);
-
         print("ticks");
-        koefficients, functorsList, discripancy = GuessApproximation.GuessApproximation.Analyse(parameters, ticks, fullSearch=False);
-        info = FunctorListMethods.GetStringInfo(koefficients, functorsList, discripancy);
-        print(info);
-        minPoint = min(parameters)[0]
-        maxPoint = max(parameters)[0]
-        Schedule.Draw(koefficients, functorsList, parameters, ticks, minPoint, maxPoint, minPoint, maxPoint, info);
+        Process(parameters, ticks);
