@@ -1,20 +1,22 @@
-import matplotlib.pyplot as plt   
+import matplotlib.pyplot as plt 
 from matplotlib.widgets import TextBox
 from mpl_toolkits.mplot3d import Axes3D 
 from Approximation import FunctorListMethods
 import decimal
 import numpy
+import ctypes
 
 def drange(x, y, jump):
-  while x < y:
-    yield float(x)
-    x += decimal.Decimal(jump)
+    while x < y:
+        yield float(x)
+        x += decimal.Decimal(jump)
     
 class Graph:
-    def __init__(self, graphPlot,  koefficients, functions, parameters, results, minX, maxX, minY, maxY, title = ''):
+    def __init__(self, graphPlot,  koefficients, functions, parameters, results, minX, maxX, minY, maxY, title = '', legend = ''):
         self.graphPlot = graphPlot;
         self.SetParameters(koefficients, functions, parameters, results, minX, maxX, minY, maxY);
         self.title = title;
+        self.legend = legend;
         self.Update()
 
     def SetKoefficientsAndFunctions(self, koefficients, functions):
@@ -45,24 +47,31 @@ class Graph:
         self.SetRange(minX, maxX, minY, maxY);
 
     def UpdateXMin(self, text):
+        if(int(text) < 0):
+            ctypes.windll.user32.MessageBoxW(0, text + ' is invalid value', 'Error', 0);
         self.minX = text;
         self.Update();
     def UpdateXMax(self, text):
+        if(int(text) < 0):
+            ctypes.windll.user32.MessageBoxW(0, text + ' is invalid value', 'Error', 0);
         self.maxX = text;
         self.Update();
     def UpdateYMin(self, text):
+        if(int(text) < 0):
+            ctypes.windll.user32.MessageBoxW(0, text + ' is invalid value', 'Error', 0);
         self.minY = text;
         self.Update();
     def UpdateYMax(self, text):
+        if(int(text) < 0):
+            ctypes.windll.user32.MessageBoxW(0, text + ' is invalid value', 'Error', 0);
         self.maxY = text;
         self.Update();
 
     def Update(self):
         self.graphPlot.clear();
-        
         if(self.dimentions == 0 or self.dimentions == 1):
             x, y = self.Get2D_Data();
-            self.graphPlot.plot(x, y);
+            self.graphPlot.plot(x, y, label= self.legend);
             xPoints = [];
             for i in range(len(self.parameters)):
                 xPoints.append(self.parameters[i][0]);
@@ -73,7 +82,7 @@ class Graph:
 
         elif(self.dimentions == 2):
             x, y, z = self.Get3D_Data();
-            self.graphPlot.plot_surface(x, y, z);
+            self.graphPlot.plot_surface(x, y, z, label= self.legend);
 
             #xPoints = [];
             #for i in range(len(self.parameters)):
@@ -87,7 +96,9 @@ class Graph:
             #plt.scatter(xPoints, yPoints, zPoints, c='r');
             
         self.graphPlot.grid(True);
-        plt.title(self.title)
+        plt.title(self.title);
+        if(len(self.legend) < 25):
+            plt.legend();
         plt.draw()
         
     def Get2D_Data(self):
@@ -120,7 +131,7 @@ class Graph:
         return xgrid, ygrid, zgrid;
 
 
-def Draw(koefficients, functions, parameters, results, xMin, xMax, yMin, yMax, title = ""):
+def Draw(koefficients, functions, parameters, results, xMin, xMax, yMin, yMax, title = "", legend = ""):
     uniqueConformities = [];
     for i in range(len(functions)):
         for j in range(len(functions[i].conformity_)):
@@ -128,7 +139,11 @@ def Draw(koefficients, functions, parameters, results, xMin, xMax, yMin, yMax, t
             if(not value in uniqueConformities):
                 uniqueConformities.append(value);
     dimentions = len(uniqueConformities);
-
+    if(dimentions > 2):
+        raise ValueError('Display multiple dimensions does not realized yet');
+    
+    plt.figure(figsize=(9.6, 7.2))#set window size
+    
     #min-max-X "area"
     minXBox = plt.axes([0.2, 0.05, 0.1, 0.05])
     maxXBox = plt.axes([0.4, 0.05, 0.1, 0.05])
@@ -140,9 +155,15 @@ def Draw(koefficients, functions, parameters, results, xMin, xMax, yMin, yMax, t
     #yourself textboxes
     minXTextBox = TextBox(minXBox, 'minX', initial=xMin, label_pad=0.05)
     maxXTextBox = TextBox(maxXBox, 'maxX', initial=xMax, label_pad=0.05)
+    if dimentions != 2:
+        color = "#BBBBBB";
+        hovercolor = color;
+    else:
+       color ='.95';
+       hovercolor = '1';
 
-    minYTextBox = TextBox(minYBox, 'minY', initial=yMin, label_pad=0.05)
-    maxYTextBox = TextBox(maxYBox, 'maxY', initial=yMax, label_pad=0.05)
+    minYTextBox = TextBox(minYBox, 'minY', initial=yMin, label_pad=0.05, color = color, hovercolor=hovercolor )
+    maxYTextBox = TextBox(maxYBox, 'maxY', initial=yMax, label_pad=0.05, color = color, hovercolor=hovercolor )
     
     #set text
     minXTextBox.text = str(xMin);
@@ -150,14 +171,23 @@ def Draw(koefficients, functions, parameters, results, xMin, xMax, yMin, yMax, t
     minYTextBox.text = str(yMin);
     maxYTextBox.text = str(yMax);
 
+    if dimentions != 2:
+        minYTextBox.active = False;
+        maxYTextBox.active = False;
     
+    #if dimentions != 2:
+        #minYTextBox.active = False;
+        #maxYTextBox.active = False;
+        #minYTextBox.;#e(state="disabled");
+    #minYTextBox.label = "hi";#False;
+    #minYTextBox.color = (255, 0, 0);
+
     if(dimentions == 0 or dimentions == 1):
         graphPlot = plt.axes([0.1, 0.2, 0.8, 0.7])
     elif(dimentions == 2):
         graphPlot = plt.axes([0.1, 0.2, 0.8, 0.7], projection='3d')
-    else:
-        raise ValueError('Display multiple dimensions does not realized yet');
-    g = Graph(graphPlot, koefficients, functions, parameters, results, minXTextBox.text, maxXTextBox.text, minYTextBox.text, maxYTextBox.text, title)
+
+    g = Graph(graphPlot, koefficients, functions, parameters, results, minXTextBox.text, maxXTextBox.text, minYTextBox.text, maxYTextBox.text, title, legend)
    
     #set submit
     minXTextBox.on_submit(g.UpdateXMin)
