@@ -17,7 +17,7 @@ def Process(title, parameters, results):
     print(info);
     
     try:
-        Schedule.Draw(koefficients, functorsList, parameters, results, minPoint, 1000, minPoint, 1000, title + '\n' +
+        Schedule.Draw(koefficients, functorsList, parameters, results, minPoint, maxPoint, minPoint, maxPoint, title + '\n' +
                   FunctorListMethods.GetStringDiscripancy(discripancy),
                   FunctorListMethods.GetStringDependence(koefficients, functorsList));
     except ValueError as e:
@@ -37,7 +37,7 @@ if __name__ == '__main__':
         idList.append(alg['id']);
         nameList.append(alg['name']);
 
-    for i in range(8, len(idList)):
+    for i in range(0, len(idList)):
         response = requests.get('https://qserverr.herokuapp.com/api/v2/algorithms/' + idList[i] + '/determinants/matrix');
         determinant = response.json()['data'];
         parameters = determinant['X'];
