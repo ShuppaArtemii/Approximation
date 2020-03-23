@@ -42,10 +42,16 @@
     <Compile Include="Approximation\Instruments\Functors\CeilFunctor.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Approximation\Instruments\Functors\PowerMultiplyFunctor.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Approximation\Instruments\Functors\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\Functors\PowerFunctor.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Regressions\PowerMultiplyRegression.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\Regressions\PowerRegression.py">
@@ -60,6 +66,9 @@
     <Compile Include="Approximation\Instruments\Sequences\AbstractSequence_.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Approximation\Instruments\Sequences\PowerMultiplySequence.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Approximation\Instruments\Sequences\PowerSequence.py">
       <SubType>Code</SubType>
     </Compile>
@@ -70,6 +79,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\OutputData.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Tests\testApproximation.py">

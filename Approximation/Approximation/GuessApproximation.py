@@ -21,29 +21,32 @@ class GuessApproximation:
 
         approximation = Approximation.Approximation(parameters, results);
         
-        baseFunctors = GuessApproximation.MakeBaseFunctors_(parameters);
-        for i in range(len(baseFunctors)):
-            for power in range(0, 20):
-                currentRegression = PowerRegression.PowerRegression.GetRegression(baseFunctors[i], power);
-                
-                currentKoefficients = approximation.CalcKoefficients(currentRegression);
-                if(len(currentKoefficients) == 0):
-                    return bestKoefficients, bestRegression, bestDiscripancy;
+        regressionList = [PowerRegression.PowerRegression];
 
-                currentDiscripancy = approximation.CalcDiscripancy(currentKoefficients, currentRegression);
+        baseFunctorList = GuessApproximation.MakeBaseFunctorList_(parameters);
+        for baseFunctor in baseFunctorList:
+            for regression in regressionList:
+                for power in range(0, 20):
+                    currentRegression = regression.GetRegression(baseFunctor, power);
+                    
+                    currentKoefficients = approximation.CalcKoefficients(currentRegression);
+                    if(len(currentKoefficients) == 0):
+                        return bestKoefficients, bestRegression, bestDiscripancy;
+
+                    currentDiscripancy = approximation.CalcDiscripancy(currentKoefficients, currentRegression);
         
-                if(currentDiscripancy < bestDiscripancy):
-                    bestDiscripancy = currentDiscripancy;
-                    bestRegression = currentRegression;
-                    bestKoefficients = currentKoefficients;
+                    if(currentDiscripancy < bestDiscripancy):
+                        bestDiscripancy = currentDiscripancy;
+                        bestRegression = currentRegression;
+                        bestKoefficients = currentKoefficients;
 
-                for j in range(len(bestKoefficients) - 1, -1, -1):
-                    if(bestKoefficients[j] == 0):
-                        bestKoefficients.pop(j);
-                        bestRegression.pop(j);
+                    for j in range(len(bestKoefficients) - 1, -1, -1):
+                        if(bestKoefficients[j] == 0):
+                            bestKoefficients.pop(j);
+                            bestRegression.pop(j);
                 
-                if(bestDiscripancy == 0 or not fullSearch and fnIsGoodDiscripancy(bestDiscripancy)):
-                    return bestKoefficients, bestRegression, bestDiscripancy;
+                    if(bestDiscripancy == 0 or not fullSearch and fnIsGoodDiscripancy(bestDiscripancy)):
+                        return bestKoefficients, bestRegression, bestDiscripancy;
 
         return bestKoefficients, bestRegression, bestDiscripancy;
 
@@ -51,18 +54,18 @@ class GuessApproximation:
     def DefaultIsGoodDiscripancy_(discripancy : float):
         return discripancy < 0.000001;
 
-    def MakeBaseFunctors_(parameters):
+    def MakeBaseFunctorList_(parameters):
         baseFunctors = [];
         
         parametersWidth = len(parameters[0]);
         functorList = [];
         for i in range(parametersWidth):
-            functorList.append(BaseFunctor.BaseFunctor(Functions.ReturnX, [i], "x" + str(i)));
+            functorList.append(BaseFunctor.BaseFunctor(Functions.ReturnX, [i], "x"));
         baseFunctors.append(functorList);
         
         functorList = [];
         for i in range(parametersWidth):
-            functorList.append(CeilFunctor.CeilFunctor(BaseFunctor.BaseFunctor(Functions.Log2X, [i], "log2(x" + str(i) + ")")));
+            functorList.append(CeilFunctor.CeilFunctor(BaseFunctor.BaseFunctor(Functions.Log2X, [i], "log2(x)")));
         baseFunctors.append(functorList);
         
         return baseFunctors;

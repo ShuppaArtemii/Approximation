@@ -1,11 +1,14 @@
-from Approximation import GuessApproximation
+from Approximation.GuessApproximation import GuessApproximation
+from Approximation.OutputData import OutputData
 from Schedule import Schedule
 from Approximation import FunctorListMethods
 import ctypes
 import requests
 
+import json
+
 def Process(title, parameters, results):
-    koefficients, functorsList, discripancy = GuessApproximation.GuessApproximation.Analyse(parameters, results, fullSearch=False);
+    koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, results, fullSearch=False);
         
     minPoint = min(parameters)[0]
     maxPoint = max(parameters)[0]
@@ -36,21 +39,19 @@ if __name__ == '__main__':
     for alg in algorithms:
         idList.append(alg['id']);
         nameList.append(alg['name']);
-
     for i in range(0, len(idList)):
+        print(idList[i] + ") " + nameList[i]);
         response = requests.get('https://qserverr.herokuapp.com/api/v2/algorithms/' + idList[i] + '/determinants/matrix');
         determinant = response.json()['data'];
         parameters = determinant['X'];
         processors = determinant['y']['processors'];
         ticks = determinant['y']['ticks'];
-
-        print(idList[i] + ") " + nameList[i]);
-        print(parameters);
-        print(processors);
-        print(ticks);
         
-        print("processors");
-        Process(nameList[i] + " (processors/width)", parameters, processors);
+        koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, processors, fullSearch=False);
+        outputData  = OutputData(koefficients, functorsList);
+        print(json.dumps(outputData.data));
+        input();
         
-        print("ticks");
-        Process(nameList[i] + " (ticks/height)", parameters, ticks);
+        koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, ticks, fullSearch=False);
+        print(json.dumps(outputData.data));
+        input();
