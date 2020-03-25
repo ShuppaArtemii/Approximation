@@ -42,16 +42,10 @@
     <Compile Include="Approximation\Instruments\Functors\CeilFunctor.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Approximation\Instruments\Functors\PowerMultiplyFunctor.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Approximation\Instruments\Functors\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\Functors\PowerFunctor.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Approximation\Instruments\Regressions\PowerMultiplyRegression.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\Regressions\PowerRegression.py">

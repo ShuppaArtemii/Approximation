@@ -53,5 +53,6 @@ if __name__ == '__main__':
         input();
         
         koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, ticks, fullSearch=False);
+        outputData  = OutputData(koefficients, functorsList);
         print(json.dumps(outputData.data));
         input();
