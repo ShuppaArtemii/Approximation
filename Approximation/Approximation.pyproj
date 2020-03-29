@@ -33,19 +33,40 @@
     <Compile Include="Approximation\Instruments\Functions.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Approximation\Instruments\Functors\AbstractModifiedFunctor_.py">
+    <Compile Include="Approximation\Instruments\FunctorList\AbstractFunctorList.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\FunctorList\Multiplication.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\FunctorList\Sum.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\FunctorList\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\Functors\BaseFunctor.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Approximation\Instruments\Functors\CeilFunctor.py">
+    <Compile Include="Approximation\Instruments\Functors\Ceil.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Functors\Const.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Functors\Log2.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Functors\X.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\Functors\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Approximation\Instruments\Functors\PowerFunctor.py">
+    <Compile Include="Approximation\Instruments\Functors\Power.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Regressions\PowerMultiplyRegression.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\Regressions\PowerRegression.py">
@@ -103,6 +124,7 @@
   <ItemGroup>
     <Folder Include="Approximation\" />
     <Folder Include="Approximation\Instruments\" />
+    <Folder Include="Approximation\Instruments\FunctorList\" />
     <Folder Include="Approximation\Instruments\Functors\" />
     <Folder Include="Approximation\Instruments\Regressions\" />
     <Folder Include="Approximation\Instruments\Regressions\Tests\" />

@@ -25,8 +25,8 @@ class Graph:
         
         uniqueConformities = [];
         for i in range(len(functions)):
-            for j in range(len(functions[i].conformity_)):
-                value = functions[i].conformity_[j];
+            for j in range(len(functions[i].GetConformity())):
+                value = functions[i].GetConformity()[j];
                 if(not value in uniqueConformities):
                     uniqueConformities.append(value);
         
@@ -134,8 +134,8 @@ class Graph:
 def Draw(koefficients, functions, parameters, results, xMin, xMax, yMin, yMax, title = "", legend = ""):
     uniqueConformities = [];
     for i in range(len(functions)):
-        for j in range(len(functions[i].conformity_)):
-            value = functions[i].conformity_[j];
+        for j in range(len(functions[i].GetConformity())):
+            value = functions[i].GetConformity()[j];
             if(not value in uniqueConformities):
                 uniqueConformities.append(value);
     dimentions = len(uniqueConformities);

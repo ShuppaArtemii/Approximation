@@ -53,7 +53,7 @@ class Approximation:
         for rowIdx in range(0, height_):
             sum = 0;
             for funcIdx in range(len(functionWithConformity)):
-                sum += koefficients[funcIdx] * functionWithConformity[funcIdx](self.GetFunctionParameters_(rowIdx, functionWithConformity[funcIdx].conformity_));
+                sum += koefficients[funcIdx] * functionWithConformity[funcIdx](self.GetFunctionParameters_(rowIdx, functionWithConformity[funcIdx].GetConformity()));
             disc = self.results_[rowIdx] - sum;
             squareDiscripancySum += disc * disc;
 
@@ -68,22 +68,22 @@ class Approximation:
             for funcIdx2 in range(len(functionWithConformity)):
                 colomnSum = 0;
                 for rowIdx in range(0, len(self.parameters_)):
-                    colomnSum += functionWithConformity[funcIdx1](self.GetFunctionParameters_(rowIdx, functionWithConformity[funcIdx1].conformity_)) * \
-                        functionWithConformity[funcIdx2](self.GetFunctionParameters_(rowIdx, functionWithConformity[funcIdx2].conformity_));
+                    colomnSum += functionWithConformity[funcIdx1](self.GetFunctionParameters_(rowIdx, functionWithConformity[funcIdx1].GetConformity())) * \
+                        functionWithConformity[funcIdx2](self.GetFunctionParameters_(rowIdx, functionWithConformity[funcIdx2].GetConformity()));
                 row.append(colomnSum);
 
             colomnSum = 0;
             for rowIdx in range(0, len(self.parameters_)):
-                colomnSum += self.results_[rowIdx] * functionWithConformity[funcIdx1](self.GetFunctionParameters_(rowIdx, functionWithConformity[funcIdx1].conformity_));	
+                colomnSum += self.results_[rowIdx] * functionWithConformity[funcIdx1](self.GetFunctionParameters_(rowIdx, functionWithConformity[funcIdx1].GetConformity()));	
             row.append(colomnSum);
             calcMatrix_.append(row);
             
         return calcMatrix_;
 
-    def GetFunctionParameters_(self, rowIdx, conformite):
-        row = [];
+    def GetFunctionParameters_(self, rowIdx, conformite):     
+        row = dict();
         for i in range(0, len(conformite)):
-           row.append(self.parameters_[rowIdx][conformite[i]]);
+           row[conformite[i]] = self.parameters_[rowIdx][conformite[i]];
 
         return row;
    
@@ -128,4 +128,5 @@ class Approximation:
                         calcMatrix_[j][k] -= tmpRow[k];
 
         return True;
+
 

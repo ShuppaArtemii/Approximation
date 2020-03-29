@@ -11,11 +11,11 @@ class OutputData:
         constName = "1";
         self.data['data']['names'] = [];
         for i in range(len(functorsList)):
-            if len(functorsList[i].conformity_) == 0 and constName not in self.data['data']['names']:
+            if len(functorsList[i].GetConformity()) == 0 and constName not in self.data['data']['names']:
                 self.data['data']['names'].append(constName);
 
-            for j in range(len(functorsList[i].conformity_)):
-                name = functorsList[i].ToString();
+            for j in range(len(functorsList[i].GetConformity())):
+                name = str(functorsList[i]);
                 if name not in self.data['data']['names']:
                     self.data['data']['names'].append(name);
     
@@ -24,31 +24,27 @@ class OutputData:
             jsonElem = {};
             jsonElem['coef'] = self.GetFormatNumber_(koefficients[i]);
             jsonElem['variables'] = [];
-            for j in range(len(functorsList[i].conformity_)):
-                variable = {
-                    'index': functorsList[i].conformity_[j] + 1,
-                    'pow': functorsList[i].power_
-                }
-                jsonElem['variables'].append(variable);
+            for j in range(len(functorsList[i])):
+                if(len(functorsList[i].GetConformity()) != 0):
+                    variable = {
+                    'index': functorsList[i].GetConformity()[j] + 1,
+                    'pow': functorsList[i][j].power_
+                    }
+                    jsonElem['variables'].append(variable);
+            
+
             self.data['data']['json'].append(jsonElem);
     
         self.data['data']['latex'] = self.GetLatexPowerString_(koefficients, functorsList);
 
     def GetFormatNumber_(self, number):
-        return format(number).rstrip('0').rstrip('.');
+        return str(number);#format(number).rstrip('0').rstrip('.');
 
     def GetLatexPowerString_(self, koefficients, functorsList):
         latexString = "";
         for i in range(len(koefficients)):
-            latexString += self.GetFormatNumber_(koefficients[i]) + functorsList[i].strFunction_;
-            if(not len(functorsList[i].conformity_) == 0):
-                latexString += "_";
-            for j in range(len(functorsList[i].conformity_)):
-                latexString += str(functorsList[i].conformity_[j] + 1);
-        
-            if hasattr(functorsList[i], 'power_'):
-                if(not functorsList[i].power_ == 1):
-                    latexString += "^" + str(functorsList[i].power_);
+            latexString += self.GetFormatNumber_(koefficients[i]) + functorsList[i].ToString(bLatex=True);
+            
             if(not i == len(koefficients) - 1):
                 latexString += " + ";
         

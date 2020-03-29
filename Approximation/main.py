@@ -47,12 +47,14 @@ if __name__ == '__main__':
         processors = determinant['y']['processors'];
         ticks = determinant['y']['ticks'];
         
+        print("processors: ");
         koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, processors, fullSearch=False);
         outputData  = OutputData(koefficients, functorsList);
         print(json.dumps(outputData.data));
-        input();
         
+        print("\nticks: ");
         koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, ticks, fullSearch=False);
         outputData  = OutputData(koefficients, functorsList);
         print(json.dumps(outputData.data));
+        
         input();

@@ -1,19 +1,27 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
-class BaseFunctor:
-    def __init__(self, function, conformity : list, strFunction : str):
-        self.function_ = function;
+class BaseFunctor_:
+    def __init__(self, childFunctor, conformity : list):
+        self.childFunctor_ = childFunctor;
         self.conformity_ = conformity;
-        self.strFunction_ = strFunction;
 
     @abstractmethod
-    def __call__(self, list):
-        return self.function_(list);
+    def GetConformity(self):
+        return self.conformity_;
 
-    def ToString(self):
-        return self.strFunction_;
+    @abstractmethod
+    def __call__(self, data : list):
+        raise NotImplementedError;
+    
+    @abstractmethod
+    def __str__(self):
+        return self.ToString(bLatex=False);
+
+    @abstractmethod
+    def ToString(self, bLatex=False):
+        raise NotImplementedError;
 
     def __eq__(self, other): 
-        return self.function_ == other.function_ and \
+        return self.childFunctor_ == other.childFunctor_ and \
             self.conformity_ == other.conformity_ and \
             self.strFunction_ == other.strFunction_;
