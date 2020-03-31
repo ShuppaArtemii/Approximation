@@ -11,79 +11,77 @@ def drange(x, y, jump):
         yield float(x)
         x += decimal.Decimal(jump)
     
-class Graph:
-    def __init__(self, graphPlot,  koefficients, functions, parameters, results, minX, maxX, minY, maxY, title = '', legend = ''):
+class WindowGraph:
+    def __init__(self, graphPlot,  koefficients, functorList, parameters, results, minX, maxX, minY, maxY, title = '', legend = ''):
         self.graphPlot = graphPlot;
-        self.SetParameters(koefficients, functions, parameters, results, minX, maxX, minY, maxY);
-        self.title = title;
-        self.legend = legend;
+        self.SetParameters(koefficients, functorList, parameters, results, minX, maxX, minY, maxY);
+        self.title_ = title;
+        self.legend_ = legend;
         self.Update()
 
-    def SetKoefficientsAndFunctions(self, koefficients, functions):
-        self.koefficients = koefficients;
-        self.functions = functions;
+    def SetKoefficientsAndFunctorList(self, koefficients, functorList):
+        self.koefficients_ = koefficients;
+        self.functorList_ = functorList;
         
-        uniqueConformities = [];
-        for i in range(len(functions)):
-            for j in range(len(functions[i].GetConformity())):
-                value = functions[i].GetConformity()[j];
-                if(not value in uniqueConformities):
-                    uniqueConformities.append(value);
-        
-        self.dimentions = len(uniqueConformities);
-        if(self.dimentions > 2):
+        self.dimentions_ = len(functorList.GetConformity());
+        if(self.dimentions_ > 2):
             raise ValueError('Display multiple dimensions does not realized yet');
     
     def SetRange(self, minX, maxX, minY, maxY):
-        self.minX = minX;
-        self.maxX = maxX;
-        self.minY = minY;
-        self.maxY = maxY;
+        self.minX_ = minX;
+        self.maxX_ = maxX;
+        self.minY_ = minY;
+        self.maxY_ = maxY;
 
     def SetParameters(self, koefficients, functions, parameters, results, minX, maxX, minY, maxY):
-        self.parameters = parameters;
-        self.results = results;
-        self.SetKoefficientsAndFunctions(koefficients, functions);
+        self.parameters_ = parameters;
+        self.results_ = results;
+        self.SetKoefficientsAndFunctorList(koefficients, functions);
         self.SetRange(minX, maxX, minY, maxY);
 
     def UpdateXMin(self, text):
         if(int(text) < 0):
             ctypes.windll.user32.MessageBoxW(0, text + ' is invalid value', 'Error', 0);
-        self.minX = text;
+        self.minX_ = text;
         self.Update();
     def UpdateXMax(self, text):
         if(int(text) < 0):
             ctypes.windll.user32.MessageBoxW(0, text + ' is invalid value', 'Error', 0);
-        self.maxX = text;
+        self.maxX_ = text;
         self.Update();
     def UpdateYMin(self, text):
         if(int(text) < 0):
             ctypes.windll.user32.MessageBoxW(0, text + ' is invalid value', 'Error', 0);
-        self.minY = text;
+        self.minY_ = text;
         self.Update();
     def UpdateYMax(self, text):
         if(int(text) < 0):
             ctypes.windll.user32.MessageBoxW(0, text + ' is invalid value', 'Error', 0);
-        self.maxY = text;
+        self.maxY_ = text;
         self.Update();
 
     def Update(self):
         self.graphPlot.clear();
-        if(self.dimentions == 0 or self.dimentions == 1):
+        if(self.dimentions_ == 0 or self.dimentions_ == 1):
             x, y = self.Get2D_Data();
-            self.graphPlot.plot(x, y, label= self.legend);
+            self.graphPlot.plot(x, y, label= self.legend_);
             xPoints = [];
-            for i in range(len(self.parameters)):
-                xPoints.append(self.parameters[i][0]);
+            conformity = self.functorList_.GetConformity()[0];
+            for i in range(len(self.parameters_)):
+                xPoints.append(self.parameters_[i][conformity]);
             yPoints = [];
-            for i in range(len(self.results)):
-                yPoints.append(self.results[i]);
+            for i in range(len(self.results_)):
+                yPoints.append(self.results_[i]);
             plt.scatter(xPoints, yPoints, c='r');
 
-        elif(self.dimentions == 2):
+        elif(self.dimentions_ == 2):
             x, y, z = self.Get3D_Data();
-            self.graphPlot.plot_surface(x, y, z, label= self.legend);
-
+            surf = self.graphPlot.plot_surface(x, y, z, label= self.legend_);
+            
+            #Следующие 2 строки нужны чтобы избежать ошибки: 'Poly3DCollection' object has no attribute... Это ошибка в реализации библиотеки 
+            surf._facecolors2d=surf._facecolors3d;
+            surf._edgecolors2d=surf._edgecolors3d;
+            
             #xPoints = [];
             #for i in range(len(self.parameters)):
             #    xPoints.append(self.parameters[i][0]);
@@ -96,28 +94,36 @@ class Graph:
             #plt.scatter(xPoints, yPoints, zPoints, c='r');
             
         self.graphPlot.grid(True);
-        plt.title(self.title);
-        if(len(self.legend) < 25):
+        plt.title(self.title_);
+        if(len(self.legend_) < 25):
             plt.legend();
         plt.draw()
         
     def Get2D_Data(self):
         x = [];
         y = [];
-        step = (int(self.maxX) + 1 - int(self.minX)) / 100;
-        for i in drange(int(self.minX), int(self.maxX) + step, step):
+        step = (int(self.maxX_) + 1 - int(self.minX_)) / 100;
+        for i in drange(int(self.minX_), int(self.maxX_) + step, step):
             x.append(i);
             sum = 0;
-            for j in range(len(self.functions)):
-                sum += self.koefficients[j] * self.functions[j]([i]);
+            
+            conformity = self.functorList_.GetConformity();
+            for j in range(len(self.functorList_)):
+                
+                if(len(conformity) == 0):
+                    sum += self.koefficients_[j] * self.functorList_[j]([]);
+                else:
+                    data = dict();
+                    data[conformity[0]] = i;
+                    sum += self.koefficients_[j] * self.functorList_[j](data);
             y.append(sum);
         return x, y;
 
     def Get3D_Data(self):
-        stepX = (int(self.maxX) + 1 - int(self.minX)) / 100;    
-        x = numpy.arange (int(self.minX), int(self.maxX) + 1, stepX);
-        stepY = (int(self.maxY) + 1 - int(self.minY)) / 100;
-        y = numpy.arange (int(self.minY), int(self.maxY) + 1, stepY);
+        stepX = (int(self.maxX_) + 1 - int(self.minX_)) / 100;    
+        x = numpy.arange (int(self.minX_), int(self.maxX_) + 1, stepX);
+        stepY = (int(self.maxY_) + 1 - int(self.minY_)) / 100;
+        y = numpy.arange (int(self.minY_), int(self.maxY_) + 1, stepY);
         xgrid, ygrid = numpy.meshgrid(x, y);
       
         matrix = [];
@@ -125,20 +131,20 @@ class Graph:
         for i in x:
             row = [];
             for j in y:
-                row.append(FunctorListMethods.CalculateDependence(self.koefficients, self.functions, [i, j]));
+                data = dict();
+                conformity = self.functorList_.GetConformity();
+                data[conformity[0]] = i;
+                data[conformity[1]] = j;
+
+                row.append(FunctorListMethods.CalculateDependence(self.koefficients_, self.functorList_, data));
+
             matrix.append(row);
         zgrid = numpy.array(matrix);
         return xgrid, ygrid, zgrid;
 
 
-def Draw(koefficients, functions, parameters, results, xMin, xMax, yMin, yMax, title = "", legend = ""):
-    uniqueConformities = [];
-    for i in range(len(functions)):
-        for j in range(len(functions[i].GetConformity())):
-            value = functions[i].GetConformity()[j];
-            if(not value in uniqueConformities):
-                uniqueConformities.append(value);
-    dimentions = len(uniqueConformities);
+def Draw(koefficients, functorList, parameters, results, xMin, xMax, yMin, yMax, title = "", legend = ""):
+    dimentions = len(functorList.GetConformity());
     if(dimentions > 2):
         raise ValueError('Display multiple dimensions does not realized yet');
     
@@ -185,9 +191,9 @@ def Draw(koefficients, functions, parameters, results, xMin, xMax, yMin, yMax, t
     if(dimentions == 0 or dimentions == 1):
         graphPlot = plt.axes([0.1, 0.2, 0.8, 0.7])
     elif(dimentions == 2):
-        graphPlot = plt.axes([0.1, 0.2, 0.8, 0.7], projection='3d')
+        graphPlot = plt.axes([0.1, 0.15, 0.8, 0.8], projection='3d')
 
-    g = Graph(graphPlot, koefficients, functions, parameters, results, minXTextBox.text, maxXTextBox.text, minYTextBox.text, maxYTextBox.text, title, legend)
+    g = WindowGraph(graphPlot, koefficients, functorList, parameters, results, minXTextBox.text, maxXTextBox.text, minYTextBox.text, maxYTextBox.text, title, legend)
    
     #set submit
     minXTextBox.on_submit(g.UpdateXMin)

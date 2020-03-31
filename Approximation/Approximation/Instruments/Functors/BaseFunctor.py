@@ -23,5 +23,4 @@ class BaseFunctor_:
 
     def __eq__(self, other): 
         return self.childFunctor_ == other.childFunctor_ and \
-            self.conformity_ == other.conformity_ and \
-            self.strFunction_ == other.strFunction_;
+            self.conformity_ == other.conformity_;

@@ -17,3 +17,6 @@ class Log2(BaseFunctor_):
     
     def ToString(self, bLatex=False):
         return "log2(" + self.childFunctor_.ToString(bLatex) + ")";
+    
+    def __eq__(self, other): 
+        return super().__eq__(other) and childFunctor_ == other.childFunctor_;

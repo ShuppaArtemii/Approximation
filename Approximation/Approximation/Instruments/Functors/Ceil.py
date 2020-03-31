@@ -6,7 +6,6 @@ class Ceil(BaseFunctor_):
         super().__init__(childFunctor, None);
         self.bCeil_ = bCeil;
         
-        
     def GetConformity(self):
         return self.childFunctor_.GetConformity();
     
@@ -25,3 +24,6 @@ class Ceil(BaseFunctor_):
     
     def ToString(self, bLatex=False):
         return self.childFunctor_.ToString(bLatex);
+
+    def __eq__(self, other): 
+        return super().__eq__(other) and self.bCeil == other.bCeil;

@@ -30,7 +30,7 @@ def CalculateDependence(koefficients, functorsList, params):
     for i in range(len(koefficients)):
         sum = 0;
         for j in range(0, len(functorsList[i].GetConformity())):
-            sum += functorsList[i]([ params[functorsList[i].GetConformity()[j]] ]);
+            sum += functorsList[i](params);
         result += koefficients[i] * sum;
         
     return result;

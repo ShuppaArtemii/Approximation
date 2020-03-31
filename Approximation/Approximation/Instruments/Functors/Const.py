@@ -15,3 +15,6 @@ class Const(BaseFunctor_):
             return "";
         else:
             return "1";
+
+    def __eq__(self, other): 
+        return super().__eq__(other);

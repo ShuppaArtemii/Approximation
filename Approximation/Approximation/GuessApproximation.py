@@ -6,7 +6,7 @@ from Approximation.Instruments.Regressions import PowerMultiplyRegression
 from Approximation.Instruments.Functors import X, Log2, Ceil
 
 class GuessApproximation:
-    def Analyse(parameters, results, fullSearch = True, fnIsGoodDiscripancy = None):
+    def Analyse(parameters, results, fullSearch = True, fnIsGoodDiscripancy = None, bDebug = True):
         if(fnIsGoodDiscripancy == None):
             fnIsGoodDiscripancy = GuessApproximation.DefaultIsGoodDiscripancy_;
         
@@ -22,7 +22,8 @@ class GuessApproximation:
         baseFunctorList = GuessApproximation.MakeBaseFunctorList_(parameters);
         for baseFunctor in baseFunctorList:
             for regression in regressionList:
-                startRegressionTime = timeit.default_timer()
+                if not bDebug:
+                    startRegressionTime = timeit.default_timer()
 
                 for power in range(0, 20 + 1):
                     currentRegression = regression.GetRegression(baseFunctor, power);
@@ -48,9 +49,10 @@ class GuessApproximation:
                     if(bestDiscripancy == 0 or not fullSearch and fnIsGoodDiscripancy(bestDiscripancy)):
                         return bestKoefficients, bestRegression, bestDiscripancy;
                     
-                    currRegressionTime = timeit.default_timer()
-                    if(currRegressionTime - startRegressionTime > 5):
-                        break;
+                    if not bDebug:
+                        currRegressionTime = timeit.default_timer()
+                        if(currRegressionTime - startRegressionTime > 5):
+                            break;
 
         return bestKoefficients, bestRegression, bestDiscripancy;
 

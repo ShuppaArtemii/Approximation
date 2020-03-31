@@ -19,3 +19,6 @@ class X(BaseFunctor_):
             string += "_";
         string += str(self.conformity_[0] + 1);
         return string;
+
+    def __eq__(self, other): 
+        return super().__eq__(other);
