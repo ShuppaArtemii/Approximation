@@ -6,7 +6,7 @@ class OutputData:
 
         self.data['data']['coef'] = [];
         for i in range(len(koefficients)):
-            self.data['data']['coef'].append(self.GetFormatNumber_(koefficients[i]));
+            self.data['data']['coef'].append(koefficients[i]);
 
         constName = "1";
         self.data['data']['names'] = [];
@@ -22,7 +22,7 @@ class OutputData:
         self.data['data']['json'] = [];
         for i in range(len(koefficients)):
             jsonElem = {};
-            jsonElem['coef'] = self.GetFormatNumber_(koefficients[i]);
+            jsonElem['coef'] = koefficients[i];
             jsonElem['variables'] = [];
             for j in range(len(functorsList[i])):
                 if(len(functorsList[i].GetConformity()) != 0):
