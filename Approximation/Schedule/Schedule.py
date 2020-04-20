@@ -5,17 +5,16 @@ from Approximation import FunctorListMethods
 import decimal
 import numpy
 import ctypes
-
 def drange(x, y, jump):
     while x < y:
         yield float(x)
         x += decimal.Decimal(jump)
     
 class WindowGraph:
-    def __init__(self, graphPlot,  koefficients, functorList, parameters, results, minX, maxX, minY, maxY, title = '', legend = ''):
+    def __init__(self, graphPlot,  koefficients, functorList, parameters, results, minX, maxX, minY, maxY, title = '', subtitle='', legend = ''):
         self.graphPlot = graphPlot;
         self.SetParameters(koefficients, functorList, parameters, results, minX, maxX, minY, maxY);
-        self.title_ = title;
+        self.title_ = title + "\n" + subtitle;
         self.legend_ = legend;
         self.Update()
 
@@ -62,7 +61,19 @@ class WindowGraph:
 
     def Update(self):
         self.graphPlot.clear();
-        if(self.dimentions_ == 0 or self.dimentions_ == 1):
+        if(self.dimentions_ == 0):
+            x, y = self.Get2D_Data();
+            self.graphPlot.plot(x, y, label= self.legend_);
+            xPoints = [];
+            conformity = 0;
+            for i in range(len(self.parameters_)):
+                xPoints.append(self.parameters_[i][conformity]);
+            yPoints = [];
+            for i in range(len(self.results_)):
+                yPoints.append(self.results_[i]);
+            plt.scatter(xPoints, yPoints, c='r');
+
+        elif(self.dimentions_ == 1):
             x, y = self.Get2D_Data();
             self.graphPlot.plot(x, y, label= self.legend_);
             xPoints = [];
@@ -142,64 +153,80 @@ class WindowGraph:
         zgrid = numpy.array(matrix);
         return xgrid, ygrid, zgrid;
 
+class Schedule:
+    def __init__(self, koefficients, functorList, parameters, results, xMin=None, xMax=None, yMin=None, yMax=None, title = "", subtitle="", legend = ""):
+        #Set default arguments 
+        minPoint = min(parameters)[0]
+        maxPoint = max(parameters)[0]
+        if(minPoint == 0 and maxPoint == 0):
+            minPoint = 0;
+            maxPoint = 1;
+        if(xMin == None): xMin = minPoint;
+        if(xMax == None): xMax = maxPoint;
+        if(yMin == None): yMin = minPoint;
+        if(yMax == None): yMax = maxPoint;
 
-def Draw(koefficients, functorList, parameters, results, xMin, xMax, yMin, yMax, title = "", legend = ""):
-    dimentions = len(functorList.GetConformity());
-    if(dimentions > 2):
-        raise ValueError('Display multiple dimensions does not realized yet');
+        #Calculate and check dimentions
+        dimentions = len(functorList.GetConformity());
+        if(dimentions > 2):
+            raise ValueError('Display multiple dimensions does not realized yet');
+        
+        #set window size
+        plt.figure(figsize=(9.6, 7.2))
     
-    plt.figure(figsize=(9.6, 7.2))#set window size
+        #min-max-X "area"
+        minXBox = plt.axes([0.2, 0.05, 0.1, 0.05])
+        maxXBox = plt.axes([0.4, 0.05, 0.1, 0.05])
+
+        #min-max-Y "area"
+        minYBox = plt.axes([0.6, 0.05, 0.1, 0.05])
+        maxYBox = plt.axes([0.8, 0.05, 0.1, 0.05])
+
+        #yourself textboxes
+        minXTextBox = TextBox(minXBox, 'minX', initial=xMin, label_pad=0.05)
+        maxXTextBox = TextBox(maxXBox, 'maxX', initial=xMax, label_pad=0.05)
+        if dimentions != 2:
+            color = "#BBBBBB";
+            hovercolor = color;
+        else:
+           color ='.95';
+           hovercolor = '1';
+
+        minYTextBox = TextBox(minYBox, 'minY', initial=yMin, label_pad=0.05, color = color, hovercolor=hovercolor )
+        maxYTextBox = TextBox(maxYBox, 'maxY', initial=yMax, label_pad=0.05, color = color, hovercolor=hovercolor )
     
-    #min-max-X "area"
-    minXBox = plt.axes([0.2, 0.05, 0.1, 0.05])
-    maxXBox = plt.axes([0.4, 0.05, 0.1, 0.05])
+        #set text
+        minXTextBox.text = str(xMin);
+        maxXTextBox.text = str(xMax);
+        minYTextBox.text = str(yMin);
+        maxYTextBox.text = str(yMax);
 
-    #min-max-Y "area"
-    minYBox = plt.axes([0.6, 0.05, 0.1, 0.05])
-    maxYBox = plt.axes([0.8, 0.05, 0.1, 0.05])
-
-    #yourself textboxes
-    minXTextBox = TextBox(minXBox, 'minX', initial=xMin, label_pad=0.05)
-    maxXTextBox = TextBox(maxXBox, 'maxX', initial=xMax, label_pad=0.05)
-    if dimentions != 2:
-        color = "#BBBBBB";
-        hovercolor = color;
-    else:
-       color ='.95';
-       hovercolor = '1';
-
-    minYTextBox = TextBox(minYBox, 'minY', initial=yMin, label_pad=0.05, color = color, hovercolor=hovercolor )
-    maxYTextBox = TextBox(maxYBox, 'maxY', initial=yMax, label_pad=0.05, color = color, hovercolor=hovercolor )
+        if dimentions != 2:
+            minYTextBox.active = False;
+            maxYTextBox.active = False;
     
-    #set text
-    minXTextBox.text = str(xMin);
-    maxXTextBox.text = str(xMax);
-    minYTextBox.text = str(yMin);
-    maxYTextBox.text = str(yMax);
+        #if dimentions != 2:
+            #minYTextBox.active = False;
+            #maxYTextBox.active = False;
+            #minYTextBox.;#e(state="disabled");
+        #minYTextBox.label = "hi";#False;
+        #minYTextBox.color = (255, 0, 0);
 
-    if dimentions != 2:
-        minYTextBox.active = False;
-        maxYTextBox.active = False;
-    
-    #if dimentions != 2:
-        #minYTextBox.active = False;
-        #maxYTextBox.active = False;
-        #minYTextBox.;#e(state="disabled");
-    #minYTextBox.label = "hi";#False;
-    #minYTextBox.color = (255, 0, 0);
+        if(dimentions == 0 or dimentions == 1):
+            graphPlot = plt.axes([0.1, 0.2, 0.8, 0.7])
+        elif(dimentions == 2):
+            graphPlot = plt.axes([0.1, 0.15, 0.8, 0.8], projection='3d')
 
-    if(dimentions == 0 or dimentions == 1):
-        graphPlot = plt.axes([0.1, 0.2, 0.8, 0.7])
-    elif(dimentions == 2):
-        graphPlot = plt.axes([0.1, 0.15, 0.8, 0.8], projection='3d')
-
-    g = WindowGraph(graphPlot, koefficients, functorList, parameters, results, minXTextBox.text, maxXTextBox.text, minYTextBox.text, maxYTextBox.text, title, legend)
+        g = WindowGraph(graphPlot, koefficients, functorList, parameters, results, minXTextBox.text, maxXTextBox.text, minYTextBox.text, maxYTextBox.text, title, subtitle, legend)
    
-    #set submit
-    minXTextBox.on_submit(g.UpdateXMin)
-    maxXTextBox.on_submit(g.UpdateXMax)
+        #set submit
+        minXTextBox.on_submit(g.UpdateXMin)
+        maxXTextBox.on_submit(g.UpdateXMax)
 
-    minYTextBox.on_submit(g.UpdateYMin)
-    maxYTextBox.on_submit(g.UpdateYMax)
+        minYTextBox.on_submit(g.UpdateYMin)
+        maxYTextBox.on_submit(g.UpdateYMax)
 
-    plt.show()
+    def Show(self):
+        plt.show();
+    def Save(self, fileName):
+        plt.savefig(fileName);

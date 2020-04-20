@@ -1,30 +1,28 @@
 from Approximation.GuessApproximation import GuessApproximation
 from Approximation.OutputData import OutputData
-from Schedule import Schedule
+from Schedule.Schedule import Schedule
 from Approximation import FunctorListMethods
 import ctypes
 import requests
 import json
 
-def CalcAndDraw(parameters, results, title=""):
-    koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, results, fullSearch=False);
-    Draw(koefficients, functorsList, parameters, results, title)    
-    
+from pathlib import Path
+def MakeShedule(koefficients, functorsList, parameters, results, title="", subtitle="", legend=""):
+    #set default arguments
+    minX = minY = min(parameters)[0]
+    maxX = maxY = max(parameters)[0]
+    if(minX == 0 and maxX == 0):
+        minX = minY = 0;
+        maxX = maxY = 1;
 
-def Draw(koefficients, functorsList, parameters, results, title=""):
-    minPoint = min(parameters)[0]
-    maxPoint = max(parameters)[0]
-    if(minPoint == 0 and maxPoint == 0):
-        minPoint = 0;
-        maxPoint = 1;
+    if(subtitle == ""): subtitle = FunctorListMethods.GetStringDiscripancy(discripancy);
+    if(legend == ""): legend = FunctorListMethods.GetStringDependence(koefficients, functorsList);
 
-    info = FunctorListMethods.GetStringInfo(koefficients, functorsList, discripancy);
-    print(info);
-    
+
     try:
-        Schedule.Draw(koefficients, functorsList, parameters, results, minPoint, maxPoint, minPoint, maxPoint, title + '\n' +
-                  FunctorListMethods.GetStringDiscripancy(discripancy),
-                  FunctorListMethods.GetStringDependence(koefficients, functorsList));
+        schedule = Schedule(koefficients, functorsList, parameters, results, minX, maxX, minY, maxY, title, subtitle, legend);
+        return schedule;
+
     except ValueError as e:
         text = '';
         if hasattr(e, 'message'):
@@ -32,6 +30,8 @@ def Draw(koefficients, functorsList, parameters, results, title=""):
         else:
             text = str(e);
         ctypes.windll.user32.MessageBoxW(0, text, 'Error', 0);
+    
+    return None;
 
 if __name__ == '__main__':
     response = requests.get('https://qserverr.herokuapp.com/api/v2/algorithms');
@@ -49,14 +49,30 @@ if __name__ == '__main__':
         processors = determinant['y']['processors'];
         ticks = determinant['y']['ticks'];
         
-        print("processors: ");
+        Path("Graphs/" + idList[i] + ". " + nameList[i]).mkdir(parents=True, exist_ok=True);
+
         koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, processors, fullSearch=False, bDebug=False);
         outputData  = OutputData(koefficients, functorsList);
-        print(json.dumps(outputData.data));
-        Draw(koefficients, functorsList, parameters, processors, nameList[i] + " (proc.)\n");
+        
+        #with open("Approximation/" + idList[i] + ". " + nameList[i] + "/Processors.json", 'w', encoding='utf-8') as f:
+        #    json.dump(outputData.data, f, ensure_ascii=False, indent=4)
+        
+        schedule = MakeShedule(koefficients, functorsList, parameters, processors, nameList[i] + " (proc.)");
+        
+        if(not schedule == None):
+            #schedule.Save("Approximation/" + idList[i] + ". " + nameList[i] + "/Processors.png");
+            schedule.Show();
 
-        print("\nticks: ");
         koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, ticks, fullSearch=False, bDebug=False);
         outputData  = OutputData(koefficients, functorsList);
-        print(json.dumps(outputData.data));
-        Draw(koefficients, functorsList, parameters, ticks, nameList[i] + " (ticks)\n");
+        
+        with open("Graphs/" + idList[i] + ". " + nameList[i] + "/Ticks.json", 'w', encoding='utf-8') as f:
+            json.dump(outputData.data, f, ensure_ascii=False, indent=4);
+
+        schedule = MakeShedule(koefficients, functorsList, parameters, ticks, nameList[i] + " (ticks)");
+        
+        if(not schedule == None):
+            #schedule.Save("Approximation/" + idList[i] + ". " + nameList[i] + "/Ticks.png");
+            schedule.Show();
+        
+        

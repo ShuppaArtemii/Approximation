@@ -38,7 +38,7 @@ class OutputData:
         self.data['data']['latex'] = self.GetLatexPowerString_(koefficients, functorsList);
 
     def GetFormatNumber_(self, number):
-        return str(number);#format(number).rstrip('0').rstrip('.');
+        return str(number);
 
     def GetLatexPowerString_(self, koefficients, functorsList):
         latexString = "";
