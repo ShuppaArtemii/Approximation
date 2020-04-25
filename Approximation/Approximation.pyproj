@@ -30,7 +30,10 @@
     <Compile Include="Approximation\GuessApproximation.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Approximation\Instruments\Functions.py">
+    <Compile Include="Approximation\Instruments\Equation\Equation.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\Equation\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\FunctorList\AbstractFunctorList.py">
@@ -124,6 +127,7 @@
   <ItemGroup>
     <Folder Include="Approximation\" />
     <Folder Include="Approximation\Instruments\" />
+    <Folder Include="Approximation\Instruments\Equation\" />
     <Folder Include="Approximation\Instruments\FunctorList\" />
     <Folder Include="Approximation\Instruments\Functors\" />
     <Folder Include="Approximation\Instruments\Regressions\" />

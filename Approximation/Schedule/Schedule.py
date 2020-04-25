@@ -168,7 +168,7 @@ class Schedule:
 
         #Calculate and check dimentions
         dimentions = len(functorList.GetConformity());
-        if(dimentions > 2):
+        if(dimentions > 2 or len(parameters[0]) > 2):
             raise ValueError('Display multiple dimensions does not realized yet');
         
         #set window size

@@ -12,7 +12,7 @@ class Power(BaseFunctor_):
     def SetPower(self, power):
         self.power_ = power;
 
-    def __call__(self, data : list):
+    def __call__(self, data):
         result = self.childFunctor_(data);
         return math.pow(result, self.power_);
 

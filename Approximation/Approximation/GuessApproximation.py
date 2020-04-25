@@ -4,6 +4,7 @@ import timeit
 from Approximation import Approximation 
 from Approximation.Instruments.Regressions import PowerMultiplyRegression
 from Approximation.Instruments.Functors import X, Log2, Ceil
+from Approximation import FunctorListMethods
 
 class GuessApproximation:
     def Analyse(parameters, results, fullSearch = True, fnIsGoodDiscripancy = None, bDebug = True):
@@ -26,14 +27,21 @@ class GuessApproximation:
                     startRegressionTime = timeit.default_timer()
 
                 for power in range(0, 20 + 1):
+                    if not bDebug:
+                        currRegressionTime = timeit.default_timer()
+                        if(currRegressionTime - startRegressionTime > 5):
+                            break;
+
                     currentRegression = regression.GetRegression(baseFunctor, power);
                     
                     currentKoefficients = approximation.CalcKoefficients(currentRegression);
                     if(len(currentKoefficients) != len(currentRegression)):
                         raise Exception("Can't solve equasion");
+                    
+                    if(not GuessApproximation.CheckNonNegative(currentKoefficients, currentRegression, max(parameters)[0])):
+                        continue;
 
                     currentDiscripancy = approximation.CalcDiscripancy(currentKoefficients, currentRegression);
-                    
 
                     if(currentDiscripancy < bestDiscripancy):
                         bestDiscripancy = currentDiscripancy;
@@ -43,17 +51,11 @@ class GuessApproximation:
                     for j in range(len(bestKoefficients) - 1, -1, -1):
                         if(bestKoefficients[j] == 0):
                             bestKoefficients.pop(j);
-                            
                             bestRegression.pop(j);
                     
                     if(bestDiscripancy == 0 or not fullSearch and fnIsGoodDiscripancy(bestDiscripancy)):
                         return bestKoefficients, bestRegression, bestDiscripancy;
                     
-                    if not bDebug:
-                        currRegressionTime = timeit.default_timer()
-                        if(currRegressionTime - startRegressionTime > 5):
-                            break;
-
         return bestKoefficients, bestRegression, bestDiscripancy;
 
 
@@ -88,3 +90,21 @@ class GuessApproximation:
                 for j in range(0, len(parameters)):
                     parameters[j].pop(i);
         return parameters;
+
+    def CheckNonNegative(currentKoefficients, currentRegression, maxValue):
+        
+        conformity = currentRegression.GetConformity();
+        for i in range(0, len(conformity)):
+            param = dict();
+            
+            for j in range(0, len(conformity)):
+                if(i != j):
+                    param[conformity[j]] = 1;
+                else:
+                    param[conformity[j]] = maxValue;
+            
+            if(FunctorListMethods.CalculateDependence(currentKoefficients, currentRegression, param) < 0):
+                return False;
+ 
+        return True;
+                    
