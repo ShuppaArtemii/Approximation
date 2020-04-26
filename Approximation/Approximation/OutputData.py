@@ -42,10 +42,14 @@ class OutputData:
 
     def GetLatexPowerString_(self, koefficients, functorsList):
         latexString = "";
-        for i in range(len(koefficients)):
-            latexString += self.GetFormatNumber_(koefficients[i]) + functorsList[i].ToString(bLatex=True);
+        i = 0;
+        for i in range(len(koefficients) - 1):
+            latexString += self.GetFormatNumber_(abs(koefficients[i])) + functorsList[i].ToString(bLatex=True);
             
-            if(not i == len(koefficients) - 1):
+            if(koefficients[i + 1] >= 0):
                 latexString += " + ";
-        
+            else:
+                latexString += " - ";
+
+        latexString += self.GetFormatNumber_(abs(koefficients[i])) + functorsList[i].ToString(bLatex=True);
         return latexString;
