@@ -1,10 +1,12 @@
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 from matplotlib.widgets import TextBox
 from mpl_toolkits.mplot3d import Axes3D 
 from Approximation import FunctorListMethods
 import decimal
 import numpy
 import ctypes
+from io import BytesIO
+
 def drange(x, y, jump):
     while x < y:
         yield float(x)
@@ -21,10 +23,7 @@ class WindowGraph:
     def SetKoefficientsAndFunctorList(self, koefficients, functorList):
         self.koefficients_ = koefficients;
         self.functorList_ = functorList;
-        
         self.dimentions_ = len(functorList.GetConformity());
-        if(self.dimentions_ > 2):
-            raise ValueError('Display multiple dimensions does not realized yet');
     
     def SetRange(self, minX, maxX, minY, maxY):
         self.minX_ = minX;
@@ -168,6 +167,8 @@ class Schedule:
 
         #Calculate and check dimentions
         dimentions = len(functorList.GetConformity());
+        if(dimentions == 0):
+            raise ValueError('Constant dependencies are not allowed to visualize');
         if(dimentions > 2 or len(parameters[0]) > 2):
             raise ValueError('Display multiple dimensions does not realized yet');
         
@@ -228,5 +229,8 @@ class Schedule:
 
     def Show(self):
         plt.show();
-    def Save(self, fileName):
+    def SaveToDisk(self, fileName):
         plt.savefig(fileName);
+    
+    def SaveToBuffer(self, buffer : BytesIO, format : str):
+        plt.savefig(buffer, format=format);

@@ -5,7 +5,7 @@ from Approximation import FunctorListMethods
 import ctypes
 import requests
 import json
-from pathlib import Path
+from pathlib import Path 
 
 def MakeShedule(koefficients, functorsList, parameters, results, title="", subtitle="", legend=""):
     #set default arguments
@@ -36,13 +36,16 @@ def MakeShedule(koefficients, functorsList, parameters, results, title="", subti
 if __name__ == '__main__':
     response = requests.get('https://qserverr.herokuapp.com/api/v2/algorithms');
     algorithms = response.json()['data'];
+    
     nameList = [];
     idList = [];
     for alg in algorithms:
         idList.append(alg['id']);
         nameList.append(alg['name']);
+    
     for i in range(0, len(idList)):
         print(idList[i] + ") " + nameList[i]);
+        
         response = requests.get('https://qserverr.herokuapp.com/api/v2/algorithms/' + idList[i] + '/determinants/matrix');
         determinant = response.json()['data'];
         parameters = determinant['X'];
@@ -51,28 +54,24 @@ if __name__ == '__main__':
         
         #Path("Graphs/" + idList[i] + ". " + nameList[i]).mkdir(parents=True, exist_ok=True);
 
+        #==========================================Processors========================================================================
         koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, processors, fullSearch=False, bDebug=False);
-        outputData  = OutputData(koefficients, functorsList);
-        
-        #with open("Graphs/" + idList[i] + ". " + nameList[i] + "/Processors.json", 'w', encoding='utf-8') as f:
-        #    json.dump(outputData.data, f, ensure_ascii=False, indent=4)
-        
         schedule = MakeShedule(koefficients, functorsList, parameters, processors, nameList[i] + " (proc.)");
-        
+        outputData  = OutputData(koefficients, functorsList, schedule);
+
+        #with open("Graphs/" + idList[i] + ". " + nameList[i] + "/Processors.json", 'w', encoding='utf-8') as f:
+        #    json.dump(outputData.data, f, ensure_ascii=False, indent=4);
         if(not schedule == None):
-            #schedule.Save("Graphs/" + idList[i] + ". " + nameList[i] + "/Processors.png");
             schedule.Show();
 
+        #==========================================Ticks========================================================================
         koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, ticks, fullSearch=False, bDebug=False);
-        outputData  = OutputData(koefficients, functorsList);
+        schedule = MakeShedule(koefficients, functorsList, parameters, ticks, nameList[i] + " (ticks)");
+        outputData  = OutputData(koefficients, functorsList, schedule);
         
         #with open("Graphs/" + idList[i] + ". " + nameList[i] + "/Ticks.json", 'w', encoding='utf-8') as f:
         #    json.dump(outputData.data, f, ensure_ascii=False, indent=4);
-
-        schedule = MakeShedule(koefficients, functorsList, parameters, ticks, nameList[i] + " (ticks)");
-        
         if(not schedule == None):
-            #schedule.Save("Graphs/" + idList[i] + ". " + nameList[i] + "/Ticks.png");
             schedule.Show();
         
         

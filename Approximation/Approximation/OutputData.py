@@ -1,6 +1,8 @@
+from io import BytesIO
+import base64
 
 class OutputData:
-    def __init__(self, koefficients, functorsList):
+    def __init__(self, koefficients, functorsList, schedule):
         self.data = {};
         self.data['data'] = {};
 
@@ -36,6 +38,14 @@ class OutputData:
             self.data['data']['json'].append(jsonElem);
     
         self.data['data']['latex'] = self.GetLatexPowerString_(koefficients, functorsList);
+        
+        if(schedule != None):
+            rawBytes = BytesIO();
+            schedule.SaveToBuffer(rawBytes, 'png');
+
+            bytesValue = base64.b64encode(rawBytes.getbuffer());
+            jsonValue = bytesValue.decode('UTF-8').replace("'", '"');
+            self.data['data']['img'] = "data:image/png;base64," + jsonValue;
 
     def GetFormatNumber_(self, number):
         return str(number);
