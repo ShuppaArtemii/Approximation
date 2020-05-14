@@ -1,6 +1,5 @@
 import unittest
 
-from Approximation.Instruments.Functions import *
 from Approximation.Instruments.Functors import BaseFunctor
 from Approximation.Instruments.Functors import PowerFunctor
 from Approximation.Instruments.Regressions import PowerRegression

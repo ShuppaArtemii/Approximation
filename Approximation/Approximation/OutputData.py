@@ -39,7 +39,7 @@ class OutputData:
     
         self.data['data']['latex'] = self.GetLatexPowerString_(koefficients, functorsList);
         
-        if(schedule != None):
+        if(schedule.CanShow() != None):
             rawBytes = BytesIO();
             schedule.SaveToBuffer(rawBytes, 'png');
 

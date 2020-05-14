@@ -7,32 +7,6 @@ import requests
 import json
 from pathlib import Path 
 
-def MakeShedule(koefficients, functorsList, parameters, results, title="", subtitle="", legend=""):
-    #set default arguments
-    minX = minY = min(parameters)[0]
-    maxX = maxY = max(parameters)[0]
-    if(minX == 0 and maxX == 0):
-        minX = minY = 0;
-        maxX = maxY = 1;
-    
-    if(subtitle == ""): subtitle = FunctorListMethods.GetStringDiscripancy(discripancy);
-    if(legend == ""): legend = FunctorListMethods.GetStringDependence(koefficients, functorsList);
-
-
-    try:
-        schedule = Schedule(koefficients, functorsList, parameters, results, minX, maxX, minY, maxY, title, subtitle, legend);
-        return schedule;
-
-    except ValueError as e:
-        text = '';
-        if hasattr(e, 'message'):
-            text = e.message;
-        else:
-            text = str(e);
-        ctypes.windll.user32.MessageBoxW(0, text, 'Error', 0);
-    
-    return None;
-
 if __name__ == '__main__':
     response = requests.get('https://qserverr.herokuapp.com/api/v2/algorithms');
     algorithms = response.json()['data'];
@@ -56,22 +30,20 @@ if __name__ == '__main__':
 
         #==========================================Processors========================================================================
         koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, processors, fullSearch=False, bDebug=False);
-        schedule = MakeShedule(koefficients, functorsList, parameters, processors, nameList[i] + " (proc.)");
+        schedule = Schedule(koefficients, functorsList, parameters, processors);
         outputData  = OutputData(koefficients, functorsList, schedule);
 
         #with open("Graphs/" + idList[i] + ". " + nameList[i] + "/Processors.json", 'w', encoding='utf-8') as f:
         #    json.dump(outputData.data, f, ensure_ascii=False, indent=4);
-        if(not schedule == None):
-            schedule.Show();
+
 
         #==========================================Ticks========================================================================
         koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, ticks, fullSearch=False, bDebug=False);
-        schedule = MakeShedule(koefficients, functorsList, parameters, ticks, nameList[i] + " (ticks)");
+        schedule = Schedule(koefficients, functorsList, parameters, ticks);
         outputData  = OutputData(koefficients, functorsList, schedule);
         
         #with open("Graphs/" + idList[i] + ". " + nameList[i] + "/Ticks.json", 'w', encoding='utf-8') as f:
         #    json.dump(outputData.data, f, ensure_ascii=False, indent=4);
-        if(not schedule == None):
-            schedule.Show();
+
         
         
