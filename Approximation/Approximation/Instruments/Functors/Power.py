@@ -24,5 +24,10 @@ class Power(BaseFunctor_):
         if(self.power_ != 0):
             string += self.childFunctor_.ToString(bLatex);
             if(self.power_ != 1):
-                string += "^" + str(self.power_);
+                string += "^";
+                if(bLatex):
+                     string += "{" + str(self.power_) + "}";
+                else:
+                    string += str(self.power_);
+
         return string;

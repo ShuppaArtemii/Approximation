@@ -16,8 +16,10 @@ class X(BaseFunctor_):
     def ToString(self, bLatex=False):
         string = "x";
         if bLatex:
-            string += "_";
+            string += "_{";
         string += str(self.conformity_[0] + 1);
+        if bLatex:
+            string += "}";
         return string;
 
     def __eq__(self, other): 

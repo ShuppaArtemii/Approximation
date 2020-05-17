@@ -39,13 +39,16 @@ class OutputData:
     
         self.data['data']['latex'] = self.GetLatexPowerString_(koefficients, functorsList);
         
-        if(schedule.CanShow() != None):
+        if(schedule.CanShow()):
             rawBytes = BytesIO();
             schedule.SaveToBuffer(rawBytes, 'png');
 
             bytesValue = base64.b64encode(rawBytes.getbuffer());
             jsonValue = bytesValue.decode('UTF-8').replace("'", '"');
             self.data['data']['img'] = "data:image/png;base64," + jsonValue;
+        else:
+            self.data['data']['img'] = "";
+            
 
     def GetFormatNumber_(self, number):
         return str(number);
@@ -53,13 +56,14 @@ class OutputData:
     def GetLatexPowerString_(self, koefficients, functorsList):
         latexString = "";
         i = 0;
-        for i in range(len(koefficients) - 1):
+        while(i < len(koefficients) - 1):
             latexString += self.GetFormatNumber_(abs(koefficients[i])) + functorsList[i].ToString(bLatex=True);
             
             if(koefficients[i + 1] >= 0):
                 latexString += " + ";
             else:
                 latexString += " - ";
+            i += 1;
 
         latexString += self.GetFormatNumber_(abs(koefficients[i])) + functorsList[i].ToString(bLatex=True);
         return latexString;
