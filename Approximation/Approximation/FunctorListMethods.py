@@ -43,7 +43,7 @@ def CalculateDependence(koefficients, functorsList, params):
 
     result = 0; 
     for funcIdx in range(len(functorsList)):
-        result += koefficients[funcIdx] * Decimal(functorsList[funcIdx](params));
+        result += koefficients[funcIdx] * float(functorsList[funcIdx](params));
         #print(result)
         
     return result;

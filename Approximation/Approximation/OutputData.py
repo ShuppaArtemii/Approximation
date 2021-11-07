@@ -8,7 +8,7 @@ class OutputData:
 
         self.data['data']['coef'] = [];
         for i in range(len(koefficients)):
-            self.data['data']['coef'].append(float(koefficients[i]));
+            self.data['data']['coef'].append(koefficients[i]);
 
         constName = "1";
         self.data['data']['names'] = [];
@@ -24,7 +24,7 @@ class OutputData:
         self.data['data']['json'] = [];
         for i in range(len(koefficients)):
             jsonElem = {};
-            jsonElem['coef'] = float(koefficients[i]);
+            jsonElem['coef'] = koefficients[i];
             jsonElem['variables'] = [];
             for j in range(len(functorsList[i])):
                 if(len(functorsList[i].GetConformity()) != 0):
@@ -57,7 +57,7 @@ class OutputData:
         latexString = "";
         i = 0;
         while(i < len(koefficients) - 1):
-            latexString += self.__GetFormatNumber(abs(float(koefficients[i]))) + functorsList[i].ToString(bLatex=True);
+            latexString += self.__GetFormatNumber(abs(koefficients[i])) + functorsList[i].ToString(bLatex=True);
             
             if(koefficients[i + 1] >= 0):
                 latexString += " + ";
@@ -65,5 +65,5 @@ class OutputData:
                 latexString += " - ";
             i += 1;
 
-        latexString += self.__GetFormatNumber(abs(float(koefficients[i]))) + functorsList[i].ToString(bLatex=True);
+        latexString += self.__GetFormatNumber(abs(koefficients[i])) + functorsList[i].ToString(bLatex=True);
         return latexString;
