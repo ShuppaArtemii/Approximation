@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import TextBox
 from mpl_toolkits.mplot3d import Axes3D 
 from Approximation import FunctorListMethods
-import decimal
+from decimal import Decimal
 import numpy
 import ctypes
 from io import BytesIO
@@ -11,11 +11,11 @@ from io import BytesIO
 class Schedule:
     def __init__(self, koefficients, functorList, parameters, results, xMin=None, xMax=None, yMin=None, yMax=None):
         self.SetParameters(koefficients, functorList, parameters, results, xMin, xMax, yMin, yMax);
-
-        plt.figure(figsize=(9.6, 7.2));
-        if(not self.CanShow()):
+        if not self.CanShow():
             self.graphPlot = None;
             return;
+
+        plt.figure(figsize=(9.6, 7.2));
 
         if (self.dimentions_ == 1):
             self.graphPlot = plt.axes([0.1, 0.1, 0.85, 0.85])
@@ -56,7 +56,7 @@ class Schedule:
         if(not self.CanShow()):
             return;
         self.graphPlot.clear();
-        if(self.dimentions_ == 0):
+        if(self.dimentions_ == 0 or self.dimentions_ == 1):
             x, y = self.Get2D_Data();
             self.graphPlot.plot(x, y);
             xPoints = [];
@@ -68,25 +68,9 @@ class Schedule:
                 yPoints.append(self.results_[i]);
             plt.scatter(xPoints, yPoints, c='r');
 
-        elif(self.dimentions_ == 1):
-            x, y = self.Get2D_Data();
-            self.graphPlot.plot(x, y);
-            xPoints = [];
-            conformity = self.functorList_.GetConformity()[0];
-            for i in range(len(self.parameters_)):
-                xPoints.append(self.parameters_[i][conformity]);
-            yPoints = [];
-            for i in range(len(self.results_)):
-                yPoints.append(self.results_[i]);
-            plt.scatter(xPoints, yPoints, c='r');
-
         elif(self.dimentions_ == 2):
             x, y, z = self.Get3D_Data();
             surf = self.graphPlot.plot_surface(x, y, z);
-            
-            #Следующие 2 строки нужны чтобы избежать ошибки: 'Poly3DCollection' object has no attribute... Это ошибка в реализации библиотеки 
-            #surf._facecolors2d=surf._facecolors3d;
-            #surf._edgecolors2d=surf._edgecolors3d;
             
         self.graphPlot.grid(True);
         plt.draw();
@@ -95,7 +79,7 @@ class Schedule:
     def __drange(x, y, jump):
         while x < y:
             yield float(x)
-            x += decimal.Decimal(jump)
+            x += Decimal(jump)
   
     def Get2D_Data(self):
         x = [];
@@ -109,11 +93,11 @@ class Schedule:
             for j in range(len(self.functorList_)):
                 
                 if(len(conformity) == 0):
-                    sum += self.koefficients_[j] * self.functorList_[j]([]);
+                    sum += self.koefficients_[j] * float(self.functorList_[j]([]));
                 else:
                     data = dict();
                     data[conformity[0]] = i;
-                    sum += self.koefficients_[j] * self.functorList_[j](data);
+                    sum += self.koefficients_[j] * float(self.functorList_[j](data));
             y.append(sum);
         return x, y;
 

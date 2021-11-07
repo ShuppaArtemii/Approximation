@@ -14,6 +14,7 @@ class GuessApproximation:
     goodDiscripancy_ = 0.000001;
 
 
+
     def Analyse(parameters, results, fastMode=True, fullBustMode=False, debugMode=False, baseFunctorList=None):
         for i in range(len(parameters)):
             for j in range(len(parameters[i])):
@@ -102,6 +103,7 @@ class GuessApproximation:
                     if(currentDiscripancy == 0):
                         break;
                     if not fullBustMode and totalBestDiscripancy <= GuessApproximation.goodDiscripancy_:
+                        GuessApproximation.__SimplifyKoefficients(totalBestKoefficients)    
                         return totalBestKoefficients, totalBestRegression, totalBestDiscripancy;
                 
             if debugMode:
@@ -110,10 +112,13 @@ class GuessApproximation:
                 print(f"\tbestRegression: {bestRegression}")
                 print(f"\tbestKoefficients: {bestKoefficients}")       
             
-            
+        GuessApproximation.__SimplifyKoefficients(totalBestKoefficients)        
         return totalBestKoefficients, totalBestRegression, totalBestDiscripancy
 
     
+    def __SimplifyKoefficients(koefficients):
+    	for i in range(len(koefficients)):
+    	    koefficients[i] = float(koefficients[i])
 
    
     def __RoundKoefficients(koefficients: list):

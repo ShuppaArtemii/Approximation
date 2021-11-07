@@ -57,12 +57,12 @@ class Program:
 
         return parameters, processors, ticks
     
-    def __GuessApproximation(self, parameters, results, fastSearch, drawShedule=False):
+    def __GuessApproximation(self, parameters, results, fastSearch, drawShedule=True):
 
         koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, results, fastMode=fastSearch, debugMode=self.debugMode)
         
-        #schedule = Schedule(koefficients, functorsList, parameters, results)
-        outputData = OutputData(koefficients, functorsList, schedule=None)
+        schedule = Schedule(koefficients, functorsList, parameters, results)
+        outputData = OutputData(koefficients, functorsList, schedule)
        
         koeff = outputData.data['data']['coef']
         functions = outputData.data['data']['json']
