@@ -28,7 +28,6 @@ class Approximation:
         squareDiscripancySum = 0;
 
         for rowIdx in range(0, height_):
-            #sum = functionWithConformity(self.parameters_[rowIdx])
             sum = 0;
             for funcIdx in range(len(functionWithConformity)):
                 sum += koefficients[funcIdx] * Decimal(functionWithConformity[funcIdx](self.parameters_[rowIdx]));
@@ -50,12 +49,7 @@ class Approximation:
                 sum = 0
                 for i in range(0, len(self.parameters_)):
                     sum += mult(self.parameters_[i])
-                
-                
-                #colomnSum = 0;
-                #for rowIdx in range(0, len(self.parameters_)):
-                #    colomnSum += Decimal(functionWithConformity[funcIdx1](self.__GetFunctionParameters(func1, self.parameters_))) * \
-                #        Decimal(functionWithConformity[funcIdx2](self.parameters_[func2.GetConformity()]));
+               
                 row.append(sum);
 
             colomnSum = 0;

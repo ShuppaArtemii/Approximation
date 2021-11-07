@@ -33,9 +33,6 @@ class Program:
             print(f"---------------------------------------------------------Ticks-----------------------------------------------------")
             self.__GuessApproximation(parameters, ticks, self.fastMode)
 
-            
-            
-    
 
     def __SetFastMode(self, alg):
         return alg['id'] in ('3', '10', '12', '13')
@@ -62,7 +59,7 @@ class Program:
     
     def __GuessApproximation(self, parameters, results, fastSearch, drawShedule=False):
 
-        koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, results, fastSearch=fastSearch, debugMode=self.debugMode)
+        koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, results, fastMode=fastSearch, debugMode=self.debugMode)
         
         print(f"\tfunctorsList: {functorsList}")
         print(f"\tkoefficients: {koefficients}") 
