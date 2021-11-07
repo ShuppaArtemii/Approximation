@@ -1,14 +1,15 @@
+#__all__ = ['X']
 from Approximation.Instruments.Functors.BaseFunctor import BaseFunctor_
 
 class X(BaseFunctor_):
-    def __init__(self, conformity : list):
-        super().__init__(None, conformity);
+    def __init__(self, conformity: int):
+        self.conformity_ = conformity;
 
     def GetConformity(self):
-        return self.conformity_;
+        return [self.conformity_];
     
     def __call__(self, data):
-        return data[self.conformity_[0]];#TODO: [0] because data builds in special function using self.conformity_; not cool to send a full list of data each time
+        return data[self.conformity_];
 
     def __str__(self):
         return self.ToString(bLatex=False);
@@ -17,10 +18,10 @@ class X(BaseFunctor_):
         string = "x";
         if bLatex:
             string += "_{";
-        string += str(self.conformity_[0] + 1);
+        string += str(self.conformity_ + 1);
         if bLatex:
             string += "}";
         return string;
 
-    def __eq__(self, other): 
-        return super().__eq__(other);
+    def __eq__(self, other):
+        return other is X and self.conformity_ == other.conformity_;

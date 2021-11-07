@@ -11,6 +11,9 @@
     <OutputPath>.</OutputPath>
     <Name>Approximation</Name>
     <RootNamespace>Approximation</RootNamespace>
+    <TestFramework>unittest</TestFramework>
+    <UnitTestPattern>test*.py</UnitTestPattern>
+    <UnitTestRootDirectory>tests/</UnitTestRootDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,13 +33,10 @@
     <Compile Include="Approximation\GuessApproximation.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Approximation\Instruments\Equation\Equation.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Approximation\Instruments\Equation\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Approximation\Instruments\FunctorList\AbstractFunctorList.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Approximation\Instruments\FunctorList\Ceil.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\FunctorList\Multiplication.py">
@@ -57,7 +57,14 @@
     <Compile Include="Approximation\Instruments\Functors\Const.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Approximation\Instruments\Functors\Exp.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Approximation\Instruments\Functors\Log2.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\testApproximation.py" />
+    <Compile Include="tests\testConst.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\Functors\X.py">
@@ -72,12 +79,6 @@
     <Compile Include="Approximation\Instruments\Regressions\PowerMultiplyRegression.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Approximation\Instruments\Regressions\PowerRegression.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Approximation\Instruments\Regressions\Tests\testPowerRegression.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Approximation\Instruments\Regressions\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -87,10 +88,7 @@
     <Compile Include="Approximation\Instruments\Sequences\PowerMultiplySequence.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Approximation\Instruments\Sequences\PowerSequence.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Approximation\Instruments\Sequences\Tests\testPowerSequence.py">
+    <Compile Include="tests\testPowerMultiplySequence.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\Sequences\__init__.py">
@@ -102,10 +100,7 @@
     <Compile Include="Approximation\OutputData.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Approximation\Tests\testApproximation.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Approximation\Tests\testGuessApproximation.py">
+    <Compile Include="tests\testGuessApproximation.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\__init__.py">
@@ -123,18 +118,22 @@
     <Compile Include="Schedule\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="tests\testPower.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\testX.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Approximation\" />
     <Folder Include="Approximation\Instruments\" />
-    <Folder Include="Approximation\Instruments\Equation\" />
     <Folder Include="Approximation\Instruments\FunctorList\" />
     <Folder Include="Approximation\Instruments\Functors\" />
     <Folder Include="Approximation\Instruments\Regressions\" />
-    <Folder Include="Approximation\Instruments\Regressions\Tests\" />
     <Folder Include="Approximation\Instruments\Sequences\" />
-    <Folder Include="Approximation\Instruments\Sequences\Tests\" />
-    <Folder Include="Approximation\Tests\" />
+    <Folder Include="tests\" />
     <Folder Include="Schedule\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

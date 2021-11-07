@@ -53,6 +53,8 @@ class Schedule:
         self.yMax_ = yMax;
 
     def Update(self):
+        if(not self.CanShow()):
+            return;
         self.graphPlot.clear();
         if(self.dimentions_ == 0):
             x, y = self.Get2D_Data();
@@ -83,14 +85,14 @@ class Schedule:
             surf = self.graphPlot.plot_surface(x, y, z);
             
             #Следующие 2 строки нужны чтобы избежать ошибки: 'Poly3DCollection' object has no attribute... Это ошибка в реализации библиотеки 
-            surf._facecolors2d=surf._facecolors3d;
-            surf._edgecolors2d=surf._edgecolors3d;
+            #surf._facecolors2d=surf._facecolors3d;
+            #surf._edgecolors2d=surf._edgecolors3d;
             
         self.graphPlot.grid(True);
         plt.draw();
         
       
-    def drange_(x, y, jump):
+    def __drange(x, y, jump):
         while x < y:
             yield float(x)
             x += decimal.Decimal(jump)
@@ -99,7 +101,7 @@ class Schedule:
         x = [];
         y = [];
         step = (int(self.xMax_) + 1 - int(self.xMin_)) / 100;
-        for i in Schedule.drange_(int(self.xMin_), int(self.xMax_) + step, step):
+        for i in Schedule.__drange(int(self.xMin_), int(self.xMax_) + step, step):
             x.append(i);
             sum = 0;
             
@@ -142,6 +144,8 @@ class Schedule:
         return self.dimentions_ == 1 or self.dimentions_ == 2;
 
     def Show(self):
+        if(not self.CanShow()):
+            return;
         plt.show();
 
     def SaveToDisk(self, fileName):

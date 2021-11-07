@@ -1,4 +1,5 @@
 from Approximation.Instruments.FunctorList.AbstractFunctorList import AbstractFunctorList_
+from decimal import Decimal
 
 class Multiplication(AbstractFunctorList_):
     def __init__(self, functorList : list):
@@ -8,9 +9,9 @@ class Multiplication(AbstractFunctorList_):
         if(len(self) == 0):
             raise Exception;
         
-        mult = 1;
+        mult = Decimal(1);
         for functor in self:
-             mult *= functor(data.copy());
+             mult *= Decimal(functor(data));
         return mult;
     
     def __str__(self):

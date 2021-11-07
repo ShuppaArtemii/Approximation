@@ -1,7 +1,7 @@
 from Approximation.Instruments.Functors.BaseFunctor import BaseFunctor_
 import math
 
-class Log2(BaseFunctor_):
+class Exp(BaseFunctor_):
     def __init__(self, internalFunctor):
         self.internalFunctor_ = internalFunctor;
         
@@ -10,15 +10,18 @@ class Log2(BaseFunctor_):
 
     def __call__(self, data : list):
         result = self.internalFunctor_(data);
-        return math.log2(result);
+        return math.exp(result);
 
     def __str__(self):
         return self.ToString(bLatex=False);
     
     def ToString(self, bLatex=False):
-        string = "log2";
+        string = "exp";
         string += "(" + self.internalFunctor_.ToString(bLatex) + ")";
         return string;
     
     def __eq__(self, other): 
-        return other is Log2 and internalFunctor_ == other.internalFunctor_;
+        return other is Exp and internalFunctor_ == other.internalFunctor_;
+
+
+

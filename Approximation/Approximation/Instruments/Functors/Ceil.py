@@ -2,20 +2,20 @@ from Approximation.Instruments.Functors.BaseFunctor import BaseFunctor_
 import math
 
 class Ceil(BaseFunctor_):
-    def __init__(self, childFunctor, bCeil : bool = True):
-        super().__init__(childFunctor, None);
-        self.bCeil_ = bCeil;
+    def __init__(self, internalFunctor, IsActive : bool = True):
+        self.internalFunctor_ = internalFunctor;
+        self.IsActive_ = IsActive;
         
     def GetConformity(self):
-        return self.childFunctor_.GetConformity();
+        return self.internalFunctor_.GetConformity();
     
-    def SetCeil(self, bValue : bool):
-        self.bCeil = bValue;
+    def SetActive(self, bValue : bool):
+        self.IsActive_ = bValue;
 
     def __call__(self, data : list):
-        result = self.childFunctor_(data);
+        result = self.internalFunctor_(data);
         
-        if(self.bCeil_):
+        if(self.IsActive_):
             return math.ceil(result);
         else: return result;
 
@@ -23,7 +23,10 @@ class Ceil(BaseFunctor_):
         return self.ToString(bLatex=False);
     
     def ToString(self, bLatex=False):
-        return self.childFunctor_.ToString(bLatex);
+        return self.internalFunctor_.ToString(bLatex);
 
     def __eq__(self, other): 
-        return super().__eq__(other) and self.bCeil == other.bCeil;
+        return \
+            other is Ceil and \
+            IsActive_ == other.IsActive_ and \
+            internalFunctor == other.internalFunctor;
