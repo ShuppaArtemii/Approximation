@@ -59,7 +59,7 @@ class testX(unittest.TestCase):
 		 self.assertTrue(lhs == rhs)
 	
 	def test_EqFalse(self):
-		 lhs = X([0])
+		 lhs = X(0)
 		 rhs = X([1])
 		 
 		 self.assertFalse(lhs == rhs)

@@ -1,4 +1,3 @@
-#__all__ = ['X']
 from Approximation.Instruments.Functors.BaseFunctor import BaseFunctor_
 
 class X(BaseFunctor_):

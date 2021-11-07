@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.widgets import TextBox
 from mpl_toolkits.mplot3d import Axes3D 
-from Approximation import FunctorListMethods
+from Approximation.FunctorListMethods import CalculateDependence
 from decimal import Decimal
 import numpy
 import ctypes
@@ -118,7 +118,7 @@ class Schedule:
                 data[conformity[0]] = i;
                 data[conformity[1]] = j;
 
-                row.append(FunctorListMethods.CalculateDependence(self.koefficients_, self.functorList_, data));
+                row.append(CalculateDependence(self.koefficients_, self.functorList_, data));
 
             matrix.append(row);
         zgrid = numpy.array(matrix);

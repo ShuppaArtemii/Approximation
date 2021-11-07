@@ -36,9 +36,6 @@
     <Compile Include="Approximation\Instruments\FunctorList\AbstractFunctorList.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Approximation\Instruments\FunctorList\Ceil.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Approximation\Instruments\FunctorList\Multiplication.py">
       <SubType>Code</SubType>
     </Compile>
@@ -110,9 +107,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Schedule\Schedule.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Schedule\visualTestSchedule.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Schedule\__init__.py">

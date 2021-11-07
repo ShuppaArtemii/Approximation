@@ -3,7 +3,7 @@ import math
 import timeit
 from Approximation.Approximation import Approximation 
 from Approximation.Instruments.Regressions.PowerMultiplyRegression import PowerMultiplyRegression
-from Approximation import FunctorListMethods
+from Approximation.FunctorListMethods import CalculateDependence
 from Approximation.Instruments.Functors.X import X
 from Approximation.Instruments.Functors.Log2 import Log2
 from Approximation.Instruments.Functors.Ceil import Ceil
@@ -12,8 +12,6 @@ from decimal import Decimal
 
 class GuessApproximation:
     goodDiscripancy_ = 0.000001;
-
-
 
     def Analyse(parameters, results, fastMode=True, fullBustMode=False, debugMode=False, baseFunctorList=None):
         for i in range(len(parameters)):
@@ -201,7 +199,7 @@ class GuessApproximation:
                 else:
                     param[conformity[j]] = maxValue
             
-            if(FunctorListMethods.CalculateDependence(currentKoefficients, currentRegression, param) < 0):
+            if(CalculateDependence(currentKoefficients, currentRegression, param) < 0):
                 return False
  
         return True;

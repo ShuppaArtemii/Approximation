@@ -5,7 +5,6 @@ from Approximation.Instruments.Functors.Power import Power
 from Approximation.Instruments.Functors.Log2 import Log2
 from Approximation.Instruments.Functors.Ceil import Ceil
 from Approximation.Instruments.Functors.Exp import Exp
-from Approximation.Instruments.FunctorList.Sum import Sum
 from Approximation.Approximation import Approximation
 from Approximation.Instruments.Regressions.PowerMultiplyRegression import PowerMultiplyRegression
 
@@ -25,7 +24,7 @@ class Test_testApproximation(unittest.TestCase):
         expectedDiscripancy = 0;
 
         functorList = [];
-        functorList.append(X([0]));
+        functorList.append(X(0));
         approximation = Approximation(parameters, results);
         try:
             actualKoefficients = approximation.CalcKoefficients(functorList);#выбрасывает исключение
@@ -41,7 +40,7 @@ class Test_testApproximation(unittest.TestCase):
         expectedDiscripancy = 0;
 
         functorList = [];
-        functorList.append(X([0]));
+        functorList.append(X(0));
 
         approximation = Approximation(parameters, results);
         try:
@@ -73,7 +72,7 @@ class Test_testApproximation(unittest.TestCase):
         expectedDiscripancy = 0;
 
         functorList = [];
-        functorList.append(X([0]));
+        functorList.append(X(0));
 
         approximation = Approximation(parameters, results);
         actualKoefficients = approximation.CalcKoefficients(functorList);
@@ -90,7 +89,7 @@ class Test_testApproximation(unittest.TestCase):
 
         functorList = [];
         functorList.append(Const());
-        functorList.append(X([0]));
+        functorList.append(X(0));
 
         approximation = Approximation(parameters, results);
         actualKoefficients = approximation.CalcKoefficients(functorList);
@@ -105,7 +104,7 @@ class Test_testApproximation(unittest.TestCase):
         expectedKoefficients = [1];
         expectedDiscripancy = 0;
 
-        powerFunctor = Power(X([0]), 2);
+        powerFunctor = Power(X(0), 2);
         functorList = [];
         functorList.append(powerFunctor);
         
@@ -122,7 +121,7 @@ class Test_testApproximation(unittest.TestCase):
         expectedKoefficients = [1];
         expectedDiscripancy = 0;
 
-        powerFunctor = Power(X([0]), 3);
+        powerFunctor = Power(X(0), 3);
         functorList = [];
         functorList.append(powerFunctor);
         
@@ -140,7 +139,7 @@ class Test_testApproximation(unittest.TestCase):
         expectedDiscripancy = 0;
 
         functorList = [];
-        functorList.append(Power(X([0]), -1));
+        functorList.append(Power(X(0), -1));
         
         approximation = Approximation(parameters, results);
         actualKoefficients = approximation.CalcKoefficients(functorList);
@@ -170,7 +169,7 @@ class Test_testApproximation(unittest.TestCase):
         functorList = [];
         
         
-        powerFunctor = Power(X([0]), 2);
+        powerFunctor = Power(X(0), 2);
         functorList.append(powerFunctor);
         
         
@@ -191,7 +190,7 @@ class Test_testApproximation(unittest.TestCase):
         expectedKoefficients = [1];
         expectedDiscripancy = 0.;
 
-        powerFunctor = Log2(X([0]));
+        powerFunctor = Log2(X(0));
         functorList = [];
         functorList.append(powerFunctor);
         
@@ -208,7 +207,7 @@ class Test_testApproximation(unittest.TestCase):
         expectedKoefficients = [1];
         expectedDiscripancy = 0.;
 
-        powerFunctor = Ceil(Log2(X([0])));
+        powerFunctor = Ceil(Log2(X(0)));
         functorList = [];
         functorList.append(powerFunctor);
         
@@ -253,7 +252,7 @@ class Test_testApproximation(unittest.TestCase):
         expectedKoefficients = [1];
         expectedDiscripancy = 0.;
 
-        powerFunctor = Ceil(Exp(X([0])));
+        powerFunctor = Ceil(Exp(X(0)));
         functorList = [];
         functorList.append(powerFunctor);
         

@@ -6,8 +6,6 @@ from Approximation.Instruments.Functors.Power import Power
 from Approximation.Instruments.Functors.Log2 import Log2
 from Approximation.Instruments.Functors.Ceil import Ceil
 from Approximation.Instruments.Functors.Exp import Exp
-from Approximation.Instruments.FunctorList.Sum import Sum
-from Approximation.Approximation import Approximation
 from Approximation.Instruments.Sequences.PowerMultiplySequence import PowerMultiplySequence
 
 
@@ -32,7 +30,7 @@ class Test_testGuessApproximation(unittest.TestCase):
         results = [-5, -4, -3,-2,-1, 0, 1, 2, 3, 4, 5];
         
         expectedKoefficients = [1];
-        expectedFunctorList = PowerMultiplySequence.GetSequence([X([0])], 1, 2);
+        expectedFunctorList = PowerMultiplySequence.GetSequence([X(0)], 1, 2);
         expectedDiscripancy = 0;
         
         actualKoefficients, actualFunctorList, actualDiscripancy = GuessApproximation.Analyse(
@@ -81,7 +79,7 @@ class Test_testGuessApproximation(unittest.TestCase):
         self.assertEqual(actualDiscripancy, expectedDiscripancy, "actualDiscripancy != expectedDiscripancy");
     
     def __Log2First(self):
-        return [[Ceil(Log2(X([0])))], [X([0])], [Ceil(Exp(X([0])))]];
+        return [[Ceil(Log2(X(0)))], [X(0)], [Ceil(Exp(X(0)))]];
 
 
     def test_x_pow2_plus_y_pow_2(self):
@@ -160,6 +158,6 @@ class Test_testGuessApproximation(unittest.TestCase):
 
         
     def ExpFirst(self):
-        return [[Ceil(Exp(X([0])))], [Ceil(Log2(X([0])))], [X([0])]];
+        return [[Ceil(Exp(X(0)))], [Ceil(Log2(X(0)))], [X(0)]];
 if __name__ == '__main__':
     unittest.main()

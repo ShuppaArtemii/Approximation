@@ -1,16 +1,8 @@
 from Approximation.GuessApproximation import GuessApproximation
 from Approximation.OutputData import OutputData
 from Schedule.Schedule import Schedule
-from Approximation import FunctorListMethods
-import ctypes
 import requests
-import json
-from pathlib import Path 
-import math
-from decimal import Decimal
 
-from Approximation.Approximation import Approximation
-from Approximation.Instruments.Regressions.PowerMultiplyRegression import PowerMultiplyRegression
 
 class Program:
     def __init__(self, debugMode=False):

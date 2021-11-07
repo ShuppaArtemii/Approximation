@@ -14,12 +14,12 @@ class Approximation:
     def SetResults(self, results):
         self.results_ = results;
 
-    def CalcKoefficients(self, functionWithConformity: AbstractFunctorList_):
-        calcMatrix_ = self.__InitializeCalcMatrix(functionWithConformity);
+    def CalcKoefficients(self, functorList: AbstractFunctorList_):
+        calcMatrix_ = self.__InitializeCalcMatrix(functorList);
         koefficients = self.__SolveCalcMatrix(calcMatrix_);
         return koefficients;
 
-    def CalcDiscripancy(self, koefficients, functionWithConformity):
+    def CalcDiscripancy(self, koefficients, functorList):
         if(len(koefficients) == 0):
             return sys.float_info.max
 
@@ -29,22 +29,22 @@ class Approximation:
 
         for rowIdx in range(0, height_):
             sum = 0;
-            for funcIdx in range(len(functionWithConformity)):
-                sum += koefficients[funcIdx] * Decimal(functionWithConformity[funcIdx](self.parameters_[rowIdx]));
+            for funcIdx in range(len(functorList)):
+                sum += koefficients[funcIdx] * functorList[funcIdx](self.parameters_[rowIdx]);
             disc = self.results_[rowIdx] - sum;
             squareDiscripancySum += disc * disc;
 
         return squareDiscripancySum;
 
-    def __InitializeCalcMatrix(self, functionWithConformity):
+    def __InitializeCalcMatrix(self, functorList):
         calcMatrix_ = [];
 
-        for funcIdx1 in range(len(functionWithConformity)):
-            func1 = functionWithConformity[funcIdx1];
+        for funcIdx1 in range(len(functorList)):
+            func1 = functorList[funcIdx1];
             row = [];
-            for funcIdx2 in range(len(functionWithConformity)):
+            for funcIdx2 in range(len(functorList)):
                 
-                func2 = functionWithConformity[funcIdx2];
+                func2 = functorList[funcIdx2];
                 mult = Multiplication(func1 + func2)
                 sum = 0
                 for i in range(0, len(self.parameters_)):

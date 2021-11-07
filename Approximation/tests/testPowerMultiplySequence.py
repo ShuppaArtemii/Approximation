@@ -5,7 +5,7 @@ from Approximation.Instruments.Sequences.PowerMultiplySequence import PowerMulti
 
 class Test_testPowerMultiplySequence(unittest.TestCase):
     def test_GetSequence(self):
-        baseFunctor = X([0]);
+        baseFunctor = X(0);
        
         start = 0; stop = 5;
         sequence = PowerMultiplySequence.GetSequence([baseFunctor], start, stop);

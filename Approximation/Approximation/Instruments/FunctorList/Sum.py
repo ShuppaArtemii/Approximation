@@ -1,4 +1,5 @@
 from Approximation.Instruments.FunctorList.AbstractFunctorList import AbstractFunctorList_
+from decimal import Decimal
 
 class Sum(AbstractFunctorList_):
     def __init__(self, functorList : list):
@@ -7,7 +8,8 @@ class Sum(AbstractFunctorList_):
     def __call__(self, data : list):
         if(len(self) == 0):
             raise Exception;
-        sum = 0;
+
+        sum = Decimal(0);
         for functor in self:
             sum += functor(data);
         return sum;
