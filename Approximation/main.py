@@ -61,12 +61,18 @@ class Program:
 
         koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, results, fastMode=fastSearch, debugMode=self.debugMode)
         
-        print(f"\tfunctorsList: {functorsList}")
-        print(f"\tkoefficients: {koefficients}") 
-        print(f"\tdiscripancy: {discripancy}")     
+        #schedule = Schedule(koefficients, functorsList, parameters, results)
+        outputData = OutputData(koefficients, functorsList, schedule=None)
+       
+        koeff = outputData.data['data']['coef']
+        functions = outputData.data['data']['json']
+
         
+        print(f"\tkoefficients: {koeff}") 
+        print(f"\tfunctorsList: {functions}")
+        print(f"\tdiscripancy: {discripancy}")
+
         if drawShedule:
-            schedule = Schedule(koefficients, functorsList, parameters, results)
             schedule.Show();
     
     def PrintInfoAlgorithm(self, alg, parameters, processors, ticks):
