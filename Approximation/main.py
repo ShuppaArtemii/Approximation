@@ -3,10 +3,26 @@ from Approximation.OutputData import OutputData
 from Schedule.Schedule import Schedule
 import requests
 
-
 class Program:
     def __init__(self, debugMode=False):
         self.debugMode = debugMode
+
+    def ProcessWidthAndHeight(self, dimentions, iterations, processors, ticks, fastMode=True):
+        parameters = self.__MergeParameters(dimentions, iterations)
+
+        width_koeff, width_func, width_disc = GuessApproximation.Analyse(parameters, processors, fastMode, debugMode=self.debugMode)
+        
+        #schedule = Schedule(width_koeff, width_func, parameters, processors)
+        #if schedule.CanShow():
+        #    schedule.Show();
+        
+        height_koeff, height_func, height_disc = GuessApproximation.Analyse(parameters, ticks, fastMode, debugMode=self.debugMode)
+        #schedule = Schedule(height_koeff, height_func, parameters, ticks)
+        #if schedule.CanShow():
+        #    schedule.Show();
+
+        ouputData = OutputData(width_koeff, width_func, height_koeff, height_func)
+        return ouputData
 
     def Start(self):
         response = requests.get('https://qserverr.herokuapp.com/api/v2/algorithms')
@@ -18,20 +34,17 @@ class Program:
             self.fastMode = self.__SetFastMode(alg);
 
             self.__PrintAlgTitle(alg)
-            parameters, processors, ticks = self.__GetAlgorithmData(alg)
             
-            print(f"---------------------------------------------------------Processors-----------------------------------------------------")
-            self.__GuessApproximation(parameters, processors, self.fastMode)
-            print(f"---------------------------------------------------------Ticks-----------------------------------------------------")
-            self.__GuessApproximation(parameters, ticks, self.fastMode)
-
+            dimentions, iterations, processors, ticks = self.__GetAlgorithmData(alg)
+            ouputData = self.ProcessWidthAndHeight(dimentions, iterations, processors, ticks, self.fastMode)
+            print(ouputData.data)
 
     def __SetFastMode(self, alg):
-        return alg['id'] in ('3', '10', '12', '13')
+        return alg['id'] in ('3', '10', '13')
 
     def __SkipAlg(self, alg):
         return False;
-    
+
     def __PrintAlgTitle(self, alg):
         print(f"================================={alg['name']}(id: {alg['id']}", end='');
         if self.fastMode:
@@ -41,31 +54,29 @@ class Program:
     def __GetAlgorithmData(self, alg):
         response = requests.get('https://qserverr.herokuapp.com/api/v2/algorithms/' + alg['id'] + '/determinants/matrix')
         determinant = response.json()['data']
-        parameters = determinant['X'] 
+        
+        parameters = determinant['X']
+
+        #Разделяем на составляющие
+        dimentions =  [row[:len(parameters[0])-1] for row in parameters]
+        iterations = [row[len(parameters[0])-1] for row in parameters]
+
         processors = determinant['y']['processors']
         ticks = determinant['y']['ticks']
 
         self.PrintInfoAlgorithm(alg, parameters, processors, ticks)
 
-        return parameters, processors, ticks
-    
-    def __GuessApproximation(self, parameters, results, fastSearch, drawShedule=True):
+        return dimentions, iterations, processors, ticks
 
-        koefficients, functorsList, discripancy = GuessApproximation.Analyse(parameters, results, fastMode=fastSearch, debugMode=self.debugMode)
-        
-        schedule = Schedule(koefficients, functorsList, parameters, results)
-        outputData = OutputData(koefficients, functorsList, schedule)
-       
-        koeff = outputData.data['data']['coef']
-        functions = outputData.data['data']['json']
 
-        
-        print(f"\tkoefficients: {koeff}") 
-        print(f"\tfunctorsList: {functions}")
-        print(f"\tdiscripancy: {discripancy}")
+    def __MergeParameters(self, dimentions, iterations):
+        parameters = []
+        for i in range(len(dimentions)):
+            row = dimentions[i].copy()
+            row.append(iterations[i])
+            parameters.append(row)
+        return parameters
 
-        if drawShedule:
-            schedule.Show();
     
     def PrintInfoAlgorithm(self, alg, parameters, processors, ticks):
         if self.debugMode:
@@ -82,6 +93,5 @@ class Program:
 
 
 if __name__ == '__main__':
-
     program = Program()
     program.Start()

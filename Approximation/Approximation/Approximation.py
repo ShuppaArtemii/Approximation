@@ -30,7 +30,7 @@ class Approximation:
         for rowIdx in range(0, height_):
             sum = 0;
             for funcIdx in range(len(functorList)):
-                sum += koefficients[funcIdx] * functorList[funcIdx](self.parameters_[rowIdx]);
+                sum += Decimal(koefficients[funcIdx]) * functorList[funcIdx](self.parameters_[rowIdx]);
             disc = self.results_[rowIdx] - sum;
             squareDiscripancySum += disc * disc;
 

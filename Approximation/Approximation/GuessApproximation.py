@@ -11,8 +11,6 @@ from Approximation.Instruments.Functors.Exp import Exp
 from decimal import Decimal
 
 class GuessApproximation:
-    goodDiscripancy_ = 0.000001;
-
     def Analyse(parameters, results, fastMode=True, fullBustMode=False, debugMode=False, baseFunctorList=None):
         for i in range(len(parameters)):
             for j in range(len(parameters[i])):
@@ -41,7 +39,7 @@ class GuessApproximation:
                 if fastMode:
                     startRegressionTime = timeit.default_timer()
                 for power in range(0, 20 + 1):
-                    isError = False;
+                    isError = False
                     if fastMode:
                         currRegressionTime = timeit.default_timer()
                         if(currRegressionTime - startRegressionTime > 5):
@@ -51,30 +49,27 @@ class GuessApproximation:
                     try:
                         currentKoefficients = approximation.CalcKoefficients(currentRegression)
                     except OverflowError:
-                        isError= True
+                        isError = True
                         break
 
                     if len(currentKoefficients) == 0:
-                        isError = True;
+                        isError = True
                         
-                    currentDiscripancy = approximation.CalcDiscripancy(currentKoefficients, currentRegression)
                     if isError and debugMode:
                         GuessApproximation.__Warning(parameters, results, power, currentRegression, currentKoefficients, currentDiscripancy)
-                        continue;
+                        continue
 
-                    #if(not GuessApproximation.__CheckNonNegative(currentKoefficients, currentRegression, max(parameters)[0])):
-                    #    continue
-                    currentKoefficients = GuessApproximation.__RoundKoefficients(currentKoefficients)
-                    
+                    currentKoefficients = GuessApproximation.__SimplifyKoefficients(currentKoefficients) 
                     
                     currentDiscripancy = approximation.CalcDiscripancy(currentKoefficients, currentRegression)
                     
+
                     if debugMode:
-                        print(f"currentDiscripancy: {currentDiscripancy}", end='')
+                        print(f"currentDiscripancy: {currentDiscripancy} ", end='')
                         if currentDiscripancy < prevDiscripancy:
-                            print(" ▼")
+                            print("▼")
                         else:
-                            print(" ▲")
+                            print("▲")
 
                     if(currentDiscripancy < totalBestDiscripancy):
                         totalBestDiscripancy = currentDiscripancy
@@ -99,42 +94,45 @@ class GuessApproximation:
                     prevDiscripancy = currentDiscripancy
 
                     if(currentDiscripancy == 0):
-                        break;
-                    if not fullBustMode and totalBestDiscripancy <= GuessApproximation.goodDiscripancy_:
-                        GuessApproximation.__SimplifyKoefficients(totalBestKoefficients)    
-                        return totalBestKoefficients, totalBestRegression, totalBestDiscripancy;
+                        break
+
+                    
+                    goodDiscripancy = 1e-6
+                    if not fullBustMode and totalBestDiscripancy <= goodDiscripancy:
+                        return totalBestKoefficients, totalBestRegression, totalBestDiscripancy
                 
             if debugMode:
                 print(f"\nbaseFunctor: {baseFunctor[0].ToString()}")
                 print(f"\tbestDiscripancy: {bestDiscripancy}")
                 print(f"\tbestRegression: {bestRegression}")
                 print(f"\tbestKoefficients: {bestKoefficients}")       
-            
-        GuessApproximation.__SimplifyKoefficients(totalBestKoefficients)        
+                   
         return totalBestKoefficients, totalBestRegression, totalBestDiscripancy
 
     
     def __SimplifyKoefficients(koefficients):
-    	for i in range(len(koefficients)):
-    	    koefficients[i] = float(koefficients[i])
-
+        
+        koefficients = GuessApproximation.__RoundKoefficients(koefficients)
+        for i in range(len(koefficients)):
+            koefficients[i] = float(koefficients[i]);
+        return koefficients
    
     def __RoundKoefficients(koefficients: list):
         """
         Округляет только те коэффициенты которые очень близки к целым числам
         """
 
-        ndigits = 0#округление до целого числа
+        ndigits = 0#попытка округления до целого числа
+        abs_tol = 1e-25;#числа меньше данного округляются до нуля
 
         for i in range(len(koefficients)):
-            koeff = koefficients[i];
-            roundKoeff = round(koeff, ndigits).normalize()
+            koeff = koefficients[i]
+            roundKoeff = round(koeff, ndigits).normalize()#округление и сброс незначащих цифр
 
-            if math.isclose(koefficients[i], roundKoeff):
+            if math.isclose(koefficients[i], roundKoeff, abs_tol=abs_tol):
                 koefficients[i] = roundKoeff
-                #print(f"{koeff}->{roundKoeff}")
 
-        return koefficients;
+        return koefficients
 
     def __MakeBaseFunctorList(parameters):
         """
@@ -146,7 +144,6 @@ class GuessApproximation:
             if row.__contains__(0):
                 hasZero = True
                 break
-
 
         parametersWidth = len(parameters[0])
 
@@ -171,7 +168,7 @@ class GuessApproximation:
 
     def __SimplifyParameters(parameters):
         """
-        Удапляет из parameters одинаковые столбцы
+        Удаляет из parameters одинаковые столбцы
         """
         for i in range(len(parameters[0]) - 1, 0, -1):
             bNotFullRepeat = False
@@ -202,7 +199,7 @@ class GuessApproximation:
             if(CalculateDependence(currentKoefficients, currentRegression, param) < 0):
                 return False
  
-        return True;
+        return True
 
     def __Warning(parameters, results, power, currentRegression, currentKoefficients, currentDiscripancy):
         print("WARNING!!!\a")
