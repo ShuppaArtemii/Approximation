@@ -21,4 +21,4 @@ class Log2(BaseFunctor_):
         return string;
     
     def __eq__(self, other): 
-        return other is Log2 and internalFunctor_ == other.internalFunctor_;
+        return type(other) is Log2 and internalFunctor_ == other.internalFunctor_;

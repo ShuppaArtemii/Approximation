@@ -1,5 +1,7 @@
 from Approximation.Instruments.Functors.BaseFunctor import BaseFunctor_
 from decimal import Decimal
+from enum import Enum
+
 
 class Const(BaseFunctor_):
     def GetConformity(self):
@@ -9,13 +11,10 @@ class Const(BaseFunctor_):
         return Decimal(1);
 
     def __str__(self) -> str:
-        return self.ToString(bLatex=False);
+        return self.ToString();
     
     def ToString(self, bLatex=False) -> str:
-        if(bLatex):
-            return "";
-        else:
-            return "1";
+       return "";
 
     def __eq__(self, other) -> bool: 
-        return other is Const;
+        return type(other) is Const;

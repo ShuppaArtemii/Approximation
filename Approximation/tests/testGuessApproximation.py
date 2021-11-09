@@ -6,20 +6,22 @@ from Approximation.Instruments.Functors.Power import Power
 from Approximation.Instruments.Functors.Log2 import Log2
 from Approximation.Instruments.Functors.Ceil import Ceil
 from Approximation.Instruments.Functors.Exp import Exp
+from Approximation.Instruments.FunctorList.Sum import Sum
+from Approximation.Instruments.FunctorList.Multiplication import Multiplication
 from Approximation.Instruments.Sequences.PowerMultiplySequence import PowerMultiplySequence
 
 
-class Test_testGuessApproximation(unittest.TestCase):
+class testGuessApproximation(unittest.TestCase):
     def test_11(self):
         parameters = [[0]];
         results = [11];
 
         expectedKoefficients = [11];
-        expectedFunctorList = [Const()];
+        expectedFunctorList = Sum(Multiplication([Const()]));
         expectedDiscripancy = 0;
         
         actualKoefficients, actualFunctorList, actualDiscripancy = GuessApproximation.Analyse(
-            parameters, results, fastMode=False, fullBustMode=False, debugMode=True);
+            parameters, results, fastMode=False, fullBustMode=False, debugMode=False);
 
         self.assertEqual(actualKoefficients, expectedKoefficients, "actualKoefficients != expectedKoefficients");
         self.assertEqual(actualFunctorList, expectedFunctorList, "actualFunctorList != expectedFunctorList");
@@ -34,7 +36,7 @@ class Test_testGuessApproximation(unittest.TestCase):
         expectedDiscripancy = 0;
         
         actualKoefficients, actualFunctorList, actualDiscripancy = GuessApproximation.Analyse(
-            parameters, results, fastMode=False, fullBustMode=False, debugMode=True);
+            parameters, results, fastMode=False, fullBustMode=False, debugMode=False);
                 
         self.assertEqual(actualKoefficients, expectedKoefficients, "actualKoefficients != expectedKoefficients");
         print(f"actualFunctorList: {actualFunctorList.ToString()}")
@@ -50,7 +52,7 @@ class Test_testGuessApproximation(unittest.TestCase):
         expectedDiscripancy = 0;
         
         actualKoefficients, actualFunctorList, actualDiscripancy = GuessApproximation.Analyse(
-            parameters, results, fastMode=False, fullBustMode=False, debugMode=True, baseFunctorList=self.__Log2First());
+            parameters, results, fastMode=False, fullBustMode=False, debugMode=False, baseFunctorList=self.__Log2First());
         
         self.assertEqual(actualKoefficients, expectedKoefficients, "actualKoefficients != expectedKoefficients");
         print(f"actualFunctorList: {actualFunctorList.ToString()}")
@@ -69,7 +71,7 @@ class Test_testGuessApproximation(unittest.TestCase):
         expectedDiscripancy = 0;
         
         actualKoefficients, actualFunctorList, actualDiscripancy = GuessApproximation.Analyse(
-            parameters, results, fastMode=False, fullBustMode=False, debugMode=True, baseFunctorList=self.__Log2First());
+            parameters, results, fastMode=False, fullBustMode=False, debugMode=False, baseFunctorList=self.__Log2First());
         for j in range(len(actualKoefficients)):
             actualKoefficients[j] = round(actualKoefficients[j]);
         
@@ -103,7 +105,7 @@ class Test_testGuessApproximation(unittest.TestCase):
          
         expectedDiscripancy = 0;
         
-        actualKoefficients, actualFunctorList, actualDiscripancy = GuessApproximation.Analyse(parameters, results, fastMode=True, fullBustMode=False, debugMode=True);
+        actualKoefficients, actualFunctorList, actualDiscripancy = GuessApproximation.Analyse(parameters, results, fastMode=True, fullBustMode=False, debugMode=False);
         for j in range(len(actualKoefficients)):
             actualKoefficients[j] = round(actualKoefficients[j]);
         
@@ -132,7 +134,7 @@ class Test_testGuessApproximation(unittest.TestCase):
         expectedDiscripancy = 0.;
 
         actualKoefficients, actualFunctorList, actualDiscripancy = GuessApproximation.Analyse(
-            parameters, results, fastMode=False, fullBustMode=False, debugMode=True, baseFunctorList=self.ExpFirst());
+            parameters, results, fastMode=False, fullBustMode=False, debugMode=False, baseFunctorList=self.ExpFirst());
                 
         self.assertEqual(actualKoefficients, expectedKoefficients, "actualKoefficients != expectedKoefficients");
         print(f"actualFunctorList: {actualFunctorList.ToString()}")
@@ -150,7 +152,7 @@ class Test_testGuessApproximation(unittest.TestCase):
         expectedDiscripancy = 0.;
 
         actualKoefficients, actualFunctorList, actualDiscripancy = GuessApproximation.Analyse(
-            parameters, results, fastMode=False, fullBustMode=False, debugMode=True, baseFunctorList=self.ExpFirst());
+            parameters, results, fastMode=False, fullBustMode=False, debugMode=False, baseFunctorList=self.ExpFirst());
 
         self.assertEqual(actualKoefficients, expectedKoefficients, "actualKoefficients != expectedKoefficients");
         print(f"actualFunctorList: {actualFunctorList.ToString()}")
@@ -159,5 +161,6 @@ class Test_testGuessApproximation(unittest.TestCase):
         
     def ExpFirst(self):
         return [[Ceil(Exp(X(0)))], [Ceil(Log2(X(0)))], [X(0)]];
+
 if __name__ == '__main__':
     unittest.main()

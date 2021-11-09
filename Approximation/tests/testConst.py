@@ -12,13 +12,13 @@ class testConst(unittest.TestCase):
 	def test_Str(self):
 		 fn = Const()
 		 actual = str(fn)
-		 expected = "1"
+		 expected = ""
 		 self.assertEqual(expected, actual)
 	
 	def test_ToStringbLatexFalse(self):
 		 fn = Const()
 		 actual = fn.ToString(bLatex=False)
-		 expected = "1"
+		 expected = ""
 		 self.assertEqual(expected, actual)
 		 
 	def test_ToStringbLatexTrue(self):

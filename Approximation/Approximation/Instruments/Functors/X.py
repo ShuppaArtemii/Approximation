@@ -23,4 +23,4 @@ class X(BaseFunctor_):
         return string;
 
     def __eq__(self, other):
-        return other is X and self.conformity_ == other.conformity_;
+        return type(other) is X and self.conformity_ == other.conformity_;

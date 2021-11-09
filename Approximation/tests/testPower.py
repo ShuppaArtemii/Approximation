@@ -10,12 +10,6 @@ class testPower(unittest.TestCase):
 		except ValueError:
 			pass
 
-	#def test_BadConstructor1(self):
-	#	self.BadConstructor(X(0))
-		
-	#def test_BadConstructor2(self):
-	#	self.BadConstructor([0, 1])
-
 	def test_Constructor(self):
 		fn = Power(X(0), 2)
 
@@ -63,6 +57,9 @@ class testPower(unittest.TestCase):
 	
 	def test_EqFalse2(self):
 		 lhs = Power(X(0), 2)
-		 rhs = Power(X([1]), 2)
+		 rhs = Power(X(1), 2)
 		 
 		 self.assertFalse(lhs == rhs)
+		 
+if __name__ == '__main__':
+    unittest.main()

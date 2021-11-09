@@ -2,11 +2,12 @@ from Approximation.GuessApproximation import GuessApproximation
 from Approximation.OutputData import OutputData
 from Schedule.Schedule import Schedule
 import requests
+import json
 
 class Program:
     def __init__(self, debugMode=False):
         self.debugMode = debugMode
-
+    
     def ProcessWidthAndHeight(self, dimentions, iterations, processors, ticks, fastMode=True):
         parameters = self.__MergeParameters(dimentions, iterations)
 
@@ -37,7 +38,8 @@ class Program:
             
             dimentions, iterations, processors, ticks = self.__GetAlgorithmData(alg)
             ouputData = self.ProcessWidthAndHeight(dimentions, iterations, processors, ticks, self.fastMode)
-            print(ouputData.data)
+            
+            print(json.dumps(ouputData.data, indent=4))
 
     def __SetFastMode(self, alg):
         return alg['id'] in ('3', '10', '13')

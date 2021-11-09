@@ -27,6 +27,6 @@ class Ceil(BaseFunctor_):
 
     def __eq__(self, other): 
         return \
-            other is Ceil and \
+            type(other) is Ceil and \
             IsActive_ == other.IsActive_ and \
             internalFunctor == other.internalFunctor;

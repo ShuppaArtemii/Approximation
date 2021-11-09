@@ -68,9 +68,9 @@ class OutputData:
             latexString += self.__GetFormatNumber(abs(koefficients[i])) + functorsList[i].ToString(bLatex);
             
             if(koefficients[i + 1] >= 0):
-                latexString += "+";
+                latexString += " + ";
             else:
-                latexString += "-";
+                latexString += " - ";
             i += 1;
 
         latexString += self.__GetFormatNumber(abs(koefficients[i])) + functorsList[i].ToString(bLatex);

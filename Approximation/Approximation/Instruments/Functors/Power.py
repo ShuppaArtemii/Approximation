@@ -34,6 +34,6 @@ class Power(BaseFunctor_):
 
     def __eq__(self, other): 
         return \
-            other is Power and\
+            type(other) is Power and\
             self.power_ == other.power_ and\
-            internalFunctor_ == other.internalFunctor_;
+            self.internalFunctor_ == other.internalFunctor_;
