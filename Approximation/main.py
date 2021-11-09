@@ -45,7 +45,7 @@ class Program:
         return alg['id'] in ('3', '10', '13')
 
     def __SkipAlg(self, alg):
-        return False;
+        return not alg['id'] in ('', '3', '');
 
     def __PrintAlgTitle(self, alg):
         print(f"================================={alg['name']}(id: {alg['id']}", end='');
