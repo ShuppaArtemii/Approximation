@@ -2,6 +2,7 @@ from Approximation.GuessApproximation import GuessApproximation
 from Approximation.OutputData import OutputData
 from Schedule.Schedule import Schedule
 import requests
+import json
 
 class Program:
     def __init__(self, debugMode=False):
@@ -37,13 +38,14 @@ class Program:
             
             dimentions, iterations, processors, ticks = self.__GetAlgorithmData(alg)
             ouputData = self.ProcessWidthAndHeight(dimentions, iterations, processors, ticks, self.fastMode)
-            print(ouputData.data)
+            
+            print(json.dumps(ouputData.data, indent=4))
 
     def __SetFastMode(self, alg):
         return alg['id'] in ('3', '10', '13')
 
     def __SkipAlg(self, alg):
-        return False;
+        return not alg['id'] in ('', '3', '');
 
     def __PrintAlgTitle(self, alg):
         print(f"================================={alg['name']}(id: {alg['id']}", end='');
