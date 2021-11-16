@@ -61,17 +61,22 @@ class OutputData:
     def __GetFormatNumber(self, number):
         return str(number);
 
-    def __GetDependenceString(self, koefficients, functorsList, bLatex=False):
-        latexString = "";
-        i = 0;
-        while(i < len(koefficients) - 1):
-            latexString += self.__GetFormatNumber(abs(koefficients[i])) + functorsList[i].ToString(bLatex);
-            
-            if(koefficients[i + 1] >= 0):
-                latexString += " + ";
-            else:
-                latexString += " - ";
-            i += 1;
+    def __GetTermString(self, koeff, function, bLatex=False):
+        string = "";
+        string += self.__GetFormatNumber(abs(koeff));
+        fnStr = function.ToString(bLatex);
+        if fnStr != "":
+            string += "*" + fnStr;
+        return string;
 
-        latexString += self.__GetFormatNumber(abs(koefficients[i])) + functorsList[i].ToString(bLatex);
-        return latexString;
+    def __GetDependenceString(self, koefficients, functorsList, bLatex=False):
+        string = "";
+        for i in range(len(koefficients)):
+            string += self.__GetTermString(koefficients[i], functorsList[i], bLatex)
+            if (i+1 < len(koefficients)):
+                if (koefficients[i] >= 0):
+                    string += " + ";
+                else:
+                    string += " - ";
+
+        return string;
