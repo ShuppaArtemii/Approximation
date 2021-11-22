@@ -11,16 +11,13 @@ class Program:
     def ProcessWidthAndHeight(self, dimentions, iterations, processors, ticks, fastMode=True):
         parameters = self.__MergeParameters(dimentions, iterations)
 
-        width_koeff, width_func, width_disc = GuessApproximation.Analyse(parameters, processors, fastMode, debugMode=self.debugMode)
-        
-        #schedule = Schedule(width_koeff, width_func, parameters, processors)
-        #if schedule.CanShow():
-        #    schedule.Show();
-        
-        height_koeff, height_func, height_disc = GuessApproximation.Analyse(parameters, ticks, fastMode, debugMode=self.debugMode)
-        #schedule = Schedule(height_koeff, height_func, parameters, ticks)
-        #if schedule.CanShow():
-        #    schedule.Show();
+        width_koeff, width_func, width_disc = GuessApproximation.Analyse(parameters, processors, fastMode, debugMode=False)
+          
+        height_koeff, height_func, height_disc = GuessApproximation.Analyse(parameters, ticks, fastMode, debugMode=False)
+
+        if debugMode:
+            print(f"width_disc:{width_disc}");
+            print(f"height_disc:{height_disc}");
 
         ouputData = OutputData(width_koeff, width_func, height_koeff, height_func)
         return ouputData
@@ -45,7 +42,7 @@ class Program:
         return alg['id'] in ('3', '10', '13')
 
     def __SkipAlg(self, alg):
-        return False;#not alg['id'] in ('', '3', '');
+        return alg['id'] in ('1','2','4','5','6','12','13')
 
     def __PrintAlgTitle(self, alg):
         print(f"================================={alg['name']}(id: {alg['id']}", end='');
@@ -91,7 +88,15 @@ class Program:
             print("ticks")
             print(f"{ticks}")
 
-
+def ProcessAlgorithmWidthAndHeight(dimentions, iterations, processors, ticks):
+    parameters = self.__MergeParameters(dimentions, iterations)
+    
+    width_koeff, width_func, width_disc = GuessApproximation.Analyse(parameters, processors, fastMode=True)
+    
+    height_koeff, height_func, height_disc = GuessApproximation.Analyse(parameters, ticks, fastMode=True)
+    
+    ouputData = OutputData(width_koeff, width_func, height_koeff, height_func)
+    return ouputData
 
 
 if __name__ == '__main__':

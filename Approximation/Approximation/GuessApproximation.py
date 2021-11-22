@@ -123,7 +123,7 @@ class GuessApproximation:
         """
 
         ndigits = 0#попытка округления до целого числа
-        abs_tol = 1e-25;#числа меньше данного округляются до нуля
+        abs_tol = 1e-20;#числа меньше данного округляются до нуля
 
         for i in range(len(koefficients)):
             koeff = koefficients[i]
