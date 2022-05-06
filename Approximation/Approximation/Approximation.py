@@ -59,21 +59,6 @@ class Approximation:
             calcMatrix_.append(row);
             
         return calcMatrix_;
-
-    def __GetFunctionParameters(self, rowIdx, conformite):     
-        row = [];
-        for i in range(0, len(conformite)):
-           row[conformite[i]] = self.parameters_[rowIdx][conformite[i]];
-
-        return row;
-
-    def __GetFunctionParameters(self, func, parameters):
-        conf = func.GetConformity();
-        row = dict();
-        for i in range(0, len(conformite)):
-           row[conformite[i]] = self.parameters_[rowIdx][conformite[i]];
-
-        return row;
    
     def __SolveCalcMatrix(self, calcMatrix_):
         height_ = len(calcMatrix_);
@@ -93,7 +78,7 @@ class Approximation:
             koefficients_.append(koeff);
             for colIdx in range(0, rowIdx):
                 calcMatrix_[colIdx][rowIdx] *= koeff;
-        koefficients_.reverse();    
+        koefficients_.reverse();
         return koefficients_;
 
     def __ToUpperTriangularView(self, calcMatrix_, height_, width_):

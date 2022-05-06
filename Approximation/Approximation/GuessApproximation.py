@@ -11,7 +11,7 @@ from Approximation.Instruments.Functors.Exp import Exp
 from decimal import Decimal
 
 class GuessApproximation:
-    def Analyse(parameters, results, fastMode=True, fullBustMode=False, debugMode=False, baseFunctorList=None):
+    def Analyse(parameters, results, fastMode=True):
         for i in range(len(parameters)):
             for j in range(len(parameters[i])):
                 parameters[i][j] = Decimal(parameters[i][j])
@@ -28,9 +28,6 @@ class GuessApproximation:
         if baseFunctorList == None:
             baseFunctorList = GuessApproximation.__MakeBaseFunctorList(parameters)
         for baseFunctor in baseFunctorList:
-            if debugMode:
-                print(baseFunctor[0].ToString())
-            prevDiscripancy = sys.float_info.max
             bestDiscripancy = sys.float_info.max
             bestRegression = []
             bestKoefficients = []
@@ -55,21 +52,12 @@ class GuessApproximation:
                     if len(currentKoefficients) == 0:
                         isError = True
                         
-                    if isError and debugMode:
-                        GuessApproximation.__Warning(parameters, results, power, currentRegression, currentKoefficients, currentDiscripancy)
+                    if isError:
                         continue
 
                     currentKoefficients = GuessApproximation.__SimplifyKoefficients(currentKoefficients) 
                     
                     currentDiscripancy = approximation.CalcDiscripancy(currentKoefficients, currentRegression)
-                    
-
-                    if debugMode:
-                        print(f"currentDiscripancy: {currentDiscripancy} ", end='')
-                        if currentDiscripancy < prevDiscripancy:
-                            print("▼")
-                        else:
-                            print("▲")
 
                     if(currentDiscripancy < totalBestDiscripancy):
                         totalBestDiscripancy = currentDiscripancy
@@ -90,22 +78,16 @@ class GuessApproximation:
                         if(bestKoefficients[j] == 0):
                             bestKoefficients.pop(j)
                             bestRegression.pop(j)
-
-                    prevDiscripancy = currentDiscripancy
+                           
 
                     if(currentDiscripancy == 0):
                         break
 
                     
                     goodDiscripancy = 1e-6
-                    if not fullBustMode and totalBestDiscripancy <= goodDiscripancy:
+                    if totalBestDiscripancy <= goodDiscripancy:
                         return totalBestKoefficients, totalBestRegression, totalBestDiscripancy
-                
-            if debugMode:
-                print(f"\nbaseFunctor: {baseFunctor[0].ToString()}")
-                print(f"\tbestDiscripancy: {bestDiscripancy}")
-                print(f"\tbestRegression: {bestRegression}")
-                print(f"\tbestKoefficients: {bestKoefficients}")       
+                     
                    
         return totalBestKoefficients, totalBestRegression, totalBestDiscripancy
 
