@@ -1,78 +1,90 @@
-from Approximation.GuessApproximation import GuessApproximation
+from Approximation.AutoApproximation import AutoApproximation
 from Approximation.OutputData import OutputData
-import yaml
+import requests
+import json
+
+class Program:
+    def ProcessWidthAndHeight(self, dimentions, iterations, processors, ticks, fastMode=True):
+        parameters = self.__MergeParameters(dimentions, iterations)
+
+        width_koeff, width_func, width_disc = AutoApproximation.Analyse(parameters.copy(), processors.copy(), fastMode)
+          
+        height_koeff, height_func, height_disc = AutoApproximation.Analyse(parameters.copy(), ticks.copy(), fastMode)
+       
+
+        ouputData = OutputData(width_koeff, width_func, height_koeff, height_func)
+
+        print(f"{width_disc=}")
+        print(f"{height_disc=}")
+
+        return ouputData
+
+    def Start(self):
+        response = requests.get('https://qserverr.herokuapp.com/api/v2/algorithms')
+        algorithms = response.json()['data']
+
+        for alg in algorithms:
+            if self.__SkipAlg(alg):
+                continue
+            self.fastMode = self.__SetFastMode(alg);
+
+            self.__PrintAlgTitle(alg)
+            
+            dimentions, iterations, processors, ticks = self.__GetAlgorithmData(alg)
+            ouputData = self.ProcessWidthAndHeight(dimentions, iterations, processors, ticks, self.fastMode)
+            
+            print(json.dumps(ouputData.data, indent=4))
+
+    def __SetFastMode(self, alg):
+        return alg['id'] in ('3', '10', '13')
+
+    def __SkipAlg(self, alg):
+        return False;#alg['id'] in ('1','2','4','5','6','12','13')
+
+    def __PrintAlgTitle(self, alg):
+        print(f"================================={alg['name']}(id: {alg['id']}", end='');
+        if self.fastMode:
+            print(", fastMode: Activated", end='');
+        print(")==================================")
+
+    def __GetAlgorithmData(self, alg):
+        response = requests.get('https://qserverr.herokuapp.com/api/v2/algorithms/' + alg['id'] + '/determinants/matrix')
+        determinant = response.json()['data']
+        
+        parameters = determinant['X']
+
+        #Разделяем на составляющие
+        dimentions =  [row[:len(parameters[0])-1] for row in parameters]
+        iterations = [row[len(parameters[0])-1] for row in parameters]
+
+        processors = determinant['y']['processors']
+        ticks = determinant['y']['ticks']
+
+        return dimentions, iterations, processors, ticks
 
 
-def ApproximateAlgorithmWidthAndHeight(**kwargs):
-    def ArgsHaveAllFrom(args, allowed_keys):
-        for key in allowed_keys:
-            if not key in args:
-                return False;
-        return True
-    
-    
-    if ArgsHaveAllFrom(kwargs, ["dimentions", "iterations", "processors", "ticks"]):
-        #merge "dimentions" and "iterations" into "parameters" 
-        kwargs["parameters"] = []
-        for i in range(len(kwargs["dimentions"])):
-            row = kwargs["dimentions"][i].copy()
-            row.append(kwargs["iterations"][i])
-            kwargs["parameters"].append(row)
-        kwargs.pop("dimentions", None)
-        kwargs.pop("iterations", None)
+    def __MergeParameters(self, dimentions, iterations):
+        parameters = []
+        for i in range(len(dimentions)):
+            row = dimentions[i].copy()
+            row.append(iterations[i])
+            parameters.append(row)
+        return parameters
 
-    if ArgsHaveAllFrom(kwargs, ["parameters", "processors", "ticks"]):
-        width_koeff, width_func, width_disc = GuessApproximation.Analyse(kwargs["parameters"], kwargs["processors"], fastMode=True)
     
-        height_koeff, height_func, height_disc = GuessApproximation.Analyse(kwargs["parameters"], kwargs["ticks"], fastMode=True)
-    
-        return OutputData(width_koeff, width_func, height_koeff, height_func)
 
-    else:
-        return OutputData([],[],[],[])
 
 def ProcessAlgorithmWidthAndHeight(dimentions, iterations, processors, ticks):
-    #merge parameters 
-    parameters = []
-    for i in range(len(dimentions)):
-        row = dimentions[i].copy()
-        row.append(iterations[i])
-        parameters.append(row)
-
-    width_koeff, width_func, width_disc = GuessApproximation.Analyse(parameters, processors, fastMode=True)
+    parameters = self.__MergeParameters(dimentions, iterations)
     
-    height_koeff, height_func, height_disc = GuessApproximation.Analyse(parameters, ticks, fastMode=True)
+    width_koeff, width_func, width_disc = AutoApproximation.Analyse(parameters, processors, fastMode=True)
+    
+    height_koeff, height_func, height_disc = AutoApproximation.Analyse(parameters, ticks, fastMode=True)
     
     ouputData = OutputData(width_koeff, width_func, height_koeff, height_func)
     return ouputData
 
 
-
-
 if __name__ == '__main__':
-    example1 = yaml.safe_load("""
-        dimentions: [[1],[2],[3],[4],[5]]
-        iterations: [0, 0, 0, 0, 0]
-        processors: [3, 6, 9, 12, 15]
-        ticks: [1, 2, 3, 4, 5]
-    """)
-    outputData = ApproximateAlgorithmWidthAndHeight(**example1).data
-    print(outputData)
-
-    example2 = yaml.safe_load("""
-        parameters:[
-            [1, 0],
-            [2, 0],
-            [3, 0],
-            [4, 0],
-            [5, 0]
-        ]
-        processors:[
-            3, 6, 9, 12, 15
-        ]
-        ticks:[
-            1, 2, 3, 4, 5
-        ]
-    """)
-    outputData = ApproximateAlgorithmWidthAndHeight(**example1).data
-    print(outputData)
+    program = Program()
+    program.Start()

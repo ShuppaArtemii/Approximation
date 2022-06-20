@@ -3,15 +3,20 @@ import math
 import timeit
 from Approximation.Approximation import Approximation 
 from Approximation.Instruments.Regressions.PowerMultiplyRegression import PowerMultiplyRegression
-from Approximation.FunctorListMethods import CalculateDependence
 from Approximation.Instruments.Functors.X import X
 from Approximation.Instruments.Functors.Log2 import Log2
 from Approximation.Instruments.Functors.Ceil import Ceil
 from Approximation.Instruments.Functors.Exp import Exp
 from decimal import Decimal
 
-class GuessApproximation:
+class AutoApproximation:
     def Analyse(parameters, results, fastMode=True):
+        if results[0] == None:
+            del parameters[0]
+            del results[0]
+
+
+
         for i in range(len(parameters)):
             for j in range(len(parameters[i])):
                 parameters[i][j] = Decimal(parameters[i][j])
@@ -20,12 +25,12 @@ class GuessApproximation:
         totalBestDiscripancy = sys.float_info.max
         totalBestRegression = []
         totalBestKoefficients = []
-        parameters = GuessApproximation.__SimplifyParameters(parameters)
+        parameters = AutoApproximation.__SimplifyParameters(parameters)
 
         approximation = Approximation(parameters, results)
         
         regressionList = [PowerMultiplyRegression]
-        baseFunctorList = GuessApproximation.__MakeBaseFunctorList(parameters)
+        baseFunctorList = AutoApproximation.__MakeBaseFunctorList(parameters)
 
         for baseFunctor in baseFunctorList:
             bestDiscripancy = sys.float_info.max
@@ -55,7 +60,7 @@ class GuessApproximation:
                     if isError:
                         continue
 
-                    currentKoefficients = GuessApproximation.__SimplifyKoefficients(currentKoefficients) 
+                    currentKoefficients = AutoApproximation.__SimplifyKoefficients(currentKoefficients) 
                     
                     currentDiscripancy = approximation.CalcDiscripancy(currentKoefficients, currentRegression)
 
@@ -94,7 +99,7 @@ class GuessApproximation:
     
     def __SimplifyKoefficients(koefficients):
         
-        koefficients = GuessApproximation.__RoundKoefficients(koefficients)
+        koefficients = AutoApproximation.__RoundKoefficients(koefficients)
         for i in range(len(koefficients)):
             koefficients[i] = float(koefficients[i]);
         return koefficients
@@ -181,13 +186,4 @@ class GuessApproximation:
             if(CalculateDependence(currentKoefficients, currentRegression, param) < 0):
                 return False
  
-        return True
-
-    def __Warning(parameters, results, power, currentRegression, currentKoefficients, currentDiscripancy):
-        print("WARNING!!!\a")
-        print(f"parameters: {parameters}")
-        print(f"results: {results}")
-        print(f"power: {power}")
-        print(f"currentRegression: {currentRegression}")
-        print(f"currentKoefficients: {currentKoefficients}")
-        print(f"currentDiscripancy: {currentDiscripancy}")              
+        return True  

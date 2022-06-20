@@ -27,10 +27,7 @@
     <Compile Include="Approximation\Approximation.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Approximation\FunctorListMethods.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Approximation\GuessApproximation.py">
+    <Compile Include="Approximation\AutoApproximation.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Approximation\Instruments\FunctorList\AbstractFunctorList.py">
@@ -106,12 +103,6 @@
     <Compile Include="main.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Schedule\Schedule.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Schedule\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="tests\testPower.py">
       <SubType>Code</SubType>
     </Compile>
@@ -128,7 +119,6 @@
     <Folder Include="Approximation\Instruments\Regressions\" />
     <Folder Include="Approximation\Instruments\Sequences\" />
     <Folder Include="tests\" />
-    <Folder Include="Schedule\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
